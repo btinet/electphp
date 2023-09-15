@@ -8,11 +8,11 @@
             <div class="container-fluid py-5">
                 <h1 class="display-5 fw-bold">Wahl der Kollegvertretung</h1>
                 <p class="col-md-8 fs-4">Wir vertreten gemeinsam unsere schulpolitischen Interessen, einerseits in schulinternen Ausschüssen, Arbeitsgruppen und Gremien. Andererseits aber auch auf Bezirks- und Landesebene.</p>
-                <button class="btn btn-primary btn-lg" type="button">Jetzt abstimmen</button>
+                <a href="#elections" class="btn btn-primary btn-lg" type="button">Jetzt abstimmen</a>
             </div>
         </div>
 
-        <h2 class="mb-3">Wahlrunden am 22.09.2023</h2>
+        <h2 id="elections" class="mb-3">Wahlrunden am 22.09.2023</h2>
         <div class="list-group">
             {% for election in elections %}
                 <a href="#" class="list-group-item list-group-item-action fw-bold">{{ election.label }}</a>
