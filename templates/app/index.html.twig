@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}KV-Wahl 2023/2024{% endblock %}
+
+{% block body %}
+    <div class="container pb-5">
+        <div class="p-5 mb-4 bg-body-tertiary rounded-3">
+            <div class="container-fluid py-5">
+                <h1 class="display-5 fw-bold">Wahl der Kollegvertretung</h1>
+                <p class="col-md-8 fs-4">Wir vertreten gemeinsam unsere schulpolitischen Interessen, einerseits in schulinternen Ausschüssen, Arbeitsgruppen und Gremien. Andererseits aber auch auf Bezirks- und Landesebene.</p>
+                <button class="btn btn-primary btn-lg" type="button">Jetzt abstimmen</button>
+            </div>
+        </div>
+
+        <h2 class="mb-3">Wahlrunden am 22.09.2023</h2>
+        <div class="list-group">
+            <button type="button" class="list-group-item list-group-item-action">Kollegsprecher:innen der Lernenden</button>
+            <button type="button" class="list-group-item list-group-item-action">Jahrgangssprecher:innen Q3/4</button>
+            <button type="button" class="list-group-item list-group-item-action">Jahrgangssprecher:innen Q1/2</button>
+            <button type="button" class="list-group-item list-group-item-action">Klassensprecher:innen E-Phase</button>
+            <button type="button" class="list-group-item list-group-item-action">Lehrkräfte des Vertrauens</button>
+        </div>
+
+    </div>
+{% endblock %}
