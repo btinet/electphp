@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Election;
+use App\Repository\ElectionCodeRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -10,10 +13,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class AppController extends AbstractController
 {
     #[Route('/', name: 'index')]
-    public function index(): Response
+    public function index(EntityManagerInterface $entityManager): Response
     {
+        $elections = $entityManager->getRepository(Election::class)->findAll();
+
         return $this->render('app/index.html.twig', [
-            'controller_name' => 'AppController',
+            'elections' => $elections,
         ]);
     }
 }
