@@ -15,7 +15,7 @@
         <h2 id="elections" class="mb-3">Wahlrunden am 22.09.2023</h2>
         <div class="list-group">
             {% for election in elections %}
-                <a href="#" class="list-group-item list-group-item-action fw-bold">{{ election.label }}</a>
+                <a href="{{ path('election_show',{'id':election.id}) }}" class="list-group-item list-group-item-action">{{ election.label }}</a>
             {% endfor %}
         </div>
 

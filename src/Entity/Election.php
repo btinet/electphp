@@ -30,6 +30,9 @@ class Election
     #[ORM\ManyToMany(targetEntity: ElectionResult::class, mappedBy: 'election')]
     private Collection $electionResults;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $voices = null;
+
     public function __construct()
     {
         $this->codes = new ArrayCollection();
@@ -149,6 +152,18 @@ class Election
         if ($this->electionResults->removeElement($electionResult)) {
             $electionResult->removeElection($this);
         }
+
+        return $this;
+    }
+
+    public function getVoices(): ?int
+    {
+        return $this->voices;
+    }
+
+    public function setVoices(?int $voices): static
+    {
+        $this->voices = $voices;
 
         return $this;
     }
