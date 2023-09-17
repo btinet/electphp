@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ElectionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ElectionRepository::class)]
@@ -105,6 +106,16 @@ class Election
     public function getPeople(): Collection
     {
         return $this->people;
+    }
+
+    public function getVotesPerPeople(): array{
+        $count = [];
+        foreach ($this->getPeople() as $person) {
+            if($person instanceof Person) {
+                $person->getElectionResults()->count();
+            }
+
+        }
     }
 
     public function addPerson(Person $person): static

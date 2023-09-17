@@ -21,20 +21,18 @@ class ElectionRepository extends ServiceEntityRepository
         parent::__construct($registry, Election::class);
     }
 
-//    /**
-//     * @return Election[] Returns an array of Election objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('e')
-//            ->andWhere('e.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('e.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+
+    public function findAllJoinResults(): array
+    {
+        return $this->createQueryBuilder('e')
+            ->innerJoin('e.electionResults','electionResults')
+            ->innerJoin('electionResults.person','person')
+            ->groupBy('e.id')
+            ->orderBy('COUNT(e.id)', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
 //    public function findOneBySomeField($value): ?Election
 //    {

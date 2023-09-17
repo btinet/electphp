@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Wahlergebnisse{% endblock %}
+
+{% block body %}
+    <div class="container pb-5">
+        <div class="row row-cols-1 g-3">
+            {% for election in elections %}
+                <div class="card card-body">
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <h2 class="h4 fw-bold">{{ election.label }}</h2>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            {% set sum = 0 %}
+                            <ul class="list-group list-group-flush">
+                                {% for person in election.people  %}
+                                    {% set sum = sum + person.electionResults.count %}
+                                    <li class="list-group-item d-flex justify-content-between fw-bold">{{ person.name }} <span class="badge badge-primary">{{ person.electionResults.count }}</span></li>
+                                {% endfor %}
+                                <li  class="list-group-item d-flex bg-light justify-content-between">SUMME <span class="badge badge-primary">{{ sum }}</span></li>
+                            </ul>
+                        </div>
+                        <div class="col-12 col-md-8">
+                            <canvas id="myChart{{ election.id }}"></canvas>
+                            <script>
+                                const ctx{{ election.id }} = document.getElementById('myChart{{ election.id }}');
+
+                                const labels{{ election.id }} = '';
+                                const data{{ election.id }} = {
+                                    labels: labels{{ election.id }},
+                                    datasets: [{
+                                        label: 'Stimmen',
+                                        data: {
+                                            {% for person in election.people  %}
+                                                '{{  person.name }}':{{  person.electionResults.count }},
+                                            {% endfor %}
+                                        },
+                                        backgroundColor: [
+                                            '#fff100',
+                                            '#ff8c00',
+                                            '#e81123',
+                                            '#ec008c',
+                                            '#68217a',
+                                            '#00188f',
+                                            '#00bcf2',
+                                            '#00b294',
+                                            '#009e49',
+                                            '#bad80a',
+                                        ],
+                                        borderWidth: 0,
+                                    }]
+                                };
+
+                                new Chart(ctx{{ election.id }}, {
+                                    type: 'bar',
+                                    data: data{{ election.id }},
+                                    options: {
+                                        responsive: true,
+                                        legend: {
+                                            position: 'bottom',
+                                        },
+                                        hover: {
+                                            mode: 'label'
+                                        },
+                                        scales: {
+                                            y: {
+                                                suggestedMin: 0,
+                                                ticks: {
+                                                    // Include a dollar sign in the ticks
+                                                    callback: function (value, index, ticks) {
+                                                        return value;
+                                                    },
+                                                    stepSize: 1
+                                                },
+                                                grid: {
+                                                    display: true
+                                                }
+                                            }
+                                        },
+                                        plugins: {
+                                            title: {
+                                                display: true,
+                                                text: 'Wahlergebnis'
+                                            },
+                                            legend: {
+                                                display: false
+                                            },
+                                        }
+                                    }
+                                });
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+
+

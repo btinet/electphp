@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="container pb-5">
-        <div class="p-5 mb-4 bg-body-tertiary rounded-3">
+        <div class="p-1 p-md-5 mb-5 bg-body-tertiary rounded-3">
             <div class="container-fluid py-5">
                 <h1 class="display-5 fw-bold">Wahl der Kollegvertretung</h1>
                 <p class="col-md-8 fs-4">Wir vertreten gemeinsam unsere schulpolitischen Interessen, einerseits in schulinternen Ausschüssen, Arbeitsgruppen und Gremien. Andererseits aber auch auf Bezirks- und Landesebene.</p>
@@ -12,10 +12,22 @@
             </div>
         </div>
 
-        <h2 id="elections" class="mb-3">Wahlrunden am 22.09.2023</h2>
-        <div class="list-group">
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="ratio ratio-16x9">
+                    <iframe class="rounded"  src="https://www.youtube.com/embed/Ct2TzFDGePY?si=mNWvTaolbHtYmSzx" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+
+        <div class="row row-cols-1 g-3">
+            <div class="col">
+                <h2 id="elections" class="h4">Wahlrunden am 22.09.2023</h2>
+            </div>
             {% for election in elections %}
-                <a href="{{ path('election_show',{'id':election.id}) }}" class="list-group-item list-group-item-action">{{ election.label }}</a>
+                <div class="col">
+                    <a href="{{ path('election_show',{'id':election.id}) }}" class="btn btn-lg btn-secondary text-start w-100">{{ election.label }}</a>
+                </div>
             {% endfor %}
         </div>
 

@@ -4,10 +4,11 @@
 
 {% block body %}
     <div class="container pb-5">
-        <div class="p-5 mb-4 bg-body-tertiary rounded-3">
-            <h1 class="h3 fw-bold">{{ election.label }}</h1>
+        <div class="p-1 p-md-5 mb-4 bg-body-tertiary rounded-3">
             <div class="container-fluid py-5">
-                <form class="row row-cols-1 gy-5 needs-validation" method="post" novalidate>
+                <a href="{{ path('app_index') }}" class="btn btn-secondary mb-5">Zur Übersicht</a>
+                <h1 class="h3 fw-bold">{{ election.label }}</h1>
+                <form class="row row-cols-1 gy-5 needs-validation" method="POST" novalidate>
                     {% if election.voices >= 1 %}
                         <div class="col">
                             <label for="code" class="form-label">Wahlcode</label>
@@ -19,8 +20,8 @@
                         {% for i in 1..election.voices %}
                             <div class="col">
                                 <label for="election_{{ i }}" class="form-label">{{ i }}. Stimme</label>
-                                <select class="form-select" id="election_{{ i }}" name="election_{{ i }}">
-                                    <option selected>Person wählen</option>
+                                <select class="form-select" id="election_{{ i }}" name="election[]" required>
+                                    <option value="" selected disabled>Person wählen</option>
                                     {% for person in election.people %}
                                         <option value="{{ person.id }}">{{ person }}</option>
                                     {% endfor %}
@@ -43,10 +44,13 @@
                                 Bitte den Wahlcode für die Wahl "{{ election.label }}" eingeben.
                             </div>
                         </div>
+
                         <div class="col d-flex justify-content-between mb-5">
                             <button type="submit" disabled class="btn btn-lg btn-primary disabled w-100">Abstimmen</button>
                         </div>
                     {% endif %}
+
+                    <input type="hidden" name="token" value="{{ csrf_token('elect') }}">
 
                     <div class="border-2 border rounded-3 p-3 bg-white border-danger">
                         <p>
@@ -55,7 +59,7 @@
                             Wahlcode ungültig gemacht, meine getroffene Auswahl wird nicht erfasst.
                         </p>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <input class="form-check-input" type="checkbox" value="invalidate" name="invalidate" id="flexCheckDefault">
                             <label class="form-check-label" for="flexCheckDefault">
                                 Stimmzettel ungültig machen
                             </label>
