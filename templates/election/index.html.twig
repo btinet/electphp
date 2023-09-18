@@ -22,7 +22,7 @@
                                 <label for="election_{{ i }}" class="form-label">{{ i }}. Stimme</label>
                                 <select class="form-select" id="election_{{ i }}" name="election[]" required>
                                     <option value="" selected disabled>Person wählen</option>
-                                    {% for person in election.people %}
+                                    {% for person in election.people|sort((a, b) => a.name <=> b.name) %}
                                         <option value="{{ person.id }}">{{ person }}</option>
                                     {% endfor %}
                                 </select>
