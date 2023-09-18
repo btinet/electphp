@@ -7,6 +7,7 @@
 
 // any CSS you import will output into a single css file (app.css in this case)
 import './styles/global.scss';
+import IMask from 'imask';
 
 const $ = require('jquery');
 // this "modifies" the jquery module: adding behavior to it
@@ -26,6 +27,13 @@ $(document).ready(function() {
 
     // Fetch all the forms we want to apply custom Bootstrap validation styles to
     const forms = document.querySelectorAll('.needs-validation')
+
+    const element = document.getElementById('code');
+    const maskOptions = {
+        mask: '[aaaaa]',
+        prepareChar: str => str.toUpperCase(),
+    };
+    const mask = IMask(element, maskOptions);
 
     // Loop over them and prevent submission
     Array.from(forms).forEach(form => {
