@@ -51,7 +51,7 @@ class AppFixtures extends Fixture
 
             $manager->persist($election);
 
-            for ($i = 1; $i <= 100; $i++) {
+            for ($i = 1; $i <= 180; $i++) {
                 $code = new ElectionCode();
                 $code->setCode($this->generateCode(5));
                 $code->setElection($election);
