@@ -13,17 +13,31 @@
                         </div>
                         <div class="col-12 col-md-4">
                             {% set sum = 0 %}
+                            {% set generic = 0 %}
+                            {% set genericCount = 0 %}
                             <ul class="list-group list-group-flush">
-                                {% for person in election.people  %}
+                                {% for person in election.people|sort((a, b) => a.name <=> b.name)  %}
                                     {% set sum = sum + person.electionResults.count %}
-                                    <li class="list-group-item d-flex justify-content-between fw-bold">{{ person.name }} <span class="badge badge-primary">{{ person.electionResults.count }}</span></li>
+                                        {% if  person.electionResults.count < 10 and election.id == 25 %}
+                                            {% if person.electionResults.count > 0  %}
+                                                {% set generic = generic + 1 %}
+                                                {% set genericCount = genericCount + person.electionResults.count %}
+                                            {% endif %}
+                                        {% else %}
+                                            <li class="list-group-item d-flex justify-content-between fw-bold">{{ person.name }} <span class="badge badge-primary">{{ person.electionResults.count }}</span></li>
+                                        {% endif %}
                                 {% endfor %}
+                                {% if generic > 0 %}
+                                    <li class="list-group-item d-flex justify-content-between fw-bold">Sonstige <span class="badge badge-primary">{{ genericCount }}</span></li>
+                                {% endif %}
                                 <li  class="list-group-item d-flex bg-light justify-content-between">SUMME <span class="badge badge-primary">{{ sum }}</span></li>
                             </ul>
                         </div>
                         <div class="col-12 col-md-8">
                             <canvas id="myChart{{ election.id }}"></canvas>
                             <script>
+                                {% set generic = 0 %}
+                                {% set genericCount = 0 %}
                                 const ctx{{ election.id }} = document.getElementById('myChart{{ election.id }}');
 
                                 const labels{{ election.id }} = '';
@@ -32,9 +46,19 @@
                                     datasets: [{
                                         label: 'Stimmen',
                                         data: {
-                                            {% for person in election.people  %}
-                                                '{{  person.name }}':{{  person.electionResults.count }},
+                                            {% for person in election.people|sort((a, b) => a.name <=> b.name)  %}
+                                                {% if person.electionResults.count < 10  and election.id == 25 %}
+                                                    {% if person.electionResults.count > 0  %}
+                                                        {% set generic = generic + 1 %}
+                                                        {% set genericCount = genericCount + person.electionResults.count %}
+                                                    {% endif %}
+                                                {% else %}
+                                                    '{{  person.name }}':{{  person.electionResults.count }},
+                                                {% endif %}
                                             {% endfor %}
+                                            {% if generic > 0  %}
+                                                'Sonstige': {{ genericCount }}
+                                            {% endif %}
                                         },
                                         backgroundColor: [
                                             '#fff100',
