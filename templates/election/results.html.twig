@@ -18,7 +18,7 @@
                             <ul class="list-group list-group-flush">
                                 {% for person in election.people|sort((a, b) => a.name <=> b.name)  %}
                                     {% set sum = sum + person.electionResults.count %}
-                                        {% if  person.electionResults.count < 10 and election.id == 25 %}
+                                        {% if  person.electionResults.count < 10 and election.id == 30 %}
                                             {% if person.electionResults.count > 0  %}
                                                 {% set generic = generic + 1 %}
                                                 {% set genericCount = genericCount + person.electionResults.count %}
@@ -47,7 +47,7 @@
                                         label: 'Stimmen',
                                         data: {
                                             {% for person in election.people|sort((a, b) => a.name <=> b.name)  %}
-                                                {% if person.electionResults.count < 10  and election.id == 25 %}
+                                                {% if person.electionResults.count < 10  and election.id == 30 %}
                                                     {% if person.electionResults.count > 0  %}
                                                         {% set generic = generic + 1 %}
                                                         {% set genericCount = genericCount + person.electionResults.count %}

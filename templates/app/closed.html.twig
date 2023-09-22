@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}KV-Wahl 2023/2024{% endblock %}
+
+{% block body %}
+    <div class="container pb-5">
+        <div class="p-1 p-md-5 mb-5 bg-body-tertiary rounded-3">
+            <div class="container-fluid py-5 text-center text-md-start">
+                <h1 class="display-5 text-center text-md-start fw-bold">Wahl der Kollegvertretung der Lernenden</h1>
+                <p class="col-md-8 fs-4 text-center text-md-start">Wir vertreten gemeinsam unsere schulpolitischen Interessen, einerseits in schulinternen Ausschüssen, Arbeitsgruppen und Gremien. Andererseits aber auch auf Bezirks- und Landesebene.</p>
+                <button href="#elections" class="btn btn-primary btn-lg disabled" disabled type="submit">Wahl geschlossen</button>
+            </div>
+        </div>
+
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="ratio ratio-16x9">
+                    <iframe class="rounded"  src="https://www.youtube.com/embed/Ct2TzFDGePY?si=mNWvTaolbHtYmSzx" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+
+        <div class="row row-cols-1 g-3">
+            <div class="col">
+                <h2 id="elections" class="h4">aktuell steht keine Wahl an.</h2>
+            </div>
+            <div class="col">
+                <h2 id="elections" class="h4">Letzte Wahlen</h2>
+                <ul class="list-group">
+                    <li class="list-group-item">Wahl der KV | 22.09.2023</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
