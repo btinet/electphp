@@ -3,16 +3,25 @@
 {% block title %}Edit Person{% endblock %}
 
 {% block body %}
-<div class="container pb-5">
-    <div class="p-1 p-md-5 mb-4 bg-body-tertiary rounded-3">
-        <div class="container-fluid py-5">
-            <a href="{{ path('admin_person_index') }}" class="btn btn-secondary mb-5">Zurück</a>
-            <h1 class="h3 fw-bold">{{ person }} bearbeiten</h1>
-            {{ include('person/_form.html.twig', {'button_label': 'Aktualisieren'}) }}
-            <div class="mt-3">
-                {{ include('person/_delete_form.html.twig') }}
+    <div class="container pb-5">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="fw-bold">{{ person }} bearbeiten</div>
+                    <a href="{{ path('admin_person_index') }}" class="btn btn-secondary">Zurück</a>
+                </div>
+            </div>
+            <div class="card-body bg-light-subtle">
+                {{ include('person/_form.html.twig', {'button_label': 'Aktualisieren'}) }}
+                <div class="mt-3">
+                    {{ include('person/_delete_form.html.twig') }}
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="text-muted small">
+                    Person bearbeiten
+                </div>
             </div>
         </div>
     </div>
-</div>
 {% endblock %}

@@ -32,7 +32,7 @@ class PersonController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($person);
             $entityManager->flush();
-
+            $this->addFlash('success',sprintf("%s wurde erfolgreich angelegt.",$person->getName()));
             return $this->redirectToRoute('admin_person_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -58,7 +58,7 @@ class PersonController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-
+            $this->addFlash('success',sprintf("%s wurde erfolgreich aktualisiert.",$person->getName()));
             return $this->redirectToRoute('admin_person_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -74,6 +74,7 @@ class PersonController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$person->getId(), $request->request->get('_token'))) {
             $entityManager->remove($person);
             $entityManager->flush();
+            $this->addFlash('success',sprintf("%s wurde erfolgreich entfernt.",$person->getName()));
         }
 
         return $this->redirectToRoute('admin_person_index', [], Response::HTTP_SEE_OTHER);

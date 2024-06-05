@@ -4,35 +4,46 @@
 
 {% block body %}
 <div class="container pb-5">
-    <div class="p-1 p-md-5 mb-4 bg-body-tertiary rounded-3">
-        <div class="container-fluid py-5">
-            <a href="{{ path('app_index') }}" class="btn btn-secondary mb-5">Zur Übersicht</a>
-            <h1 class="h3 fw-bold">Kandidat:innen</h1>
-            <table class="table">
-                <thead>
+    <div class="card  rounded-3">
+        <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="fw-bold">Kandidat:innen</div>
+                <div class="d-flex">
+                    <a href="{{ path('app_index') }}" class="btn btn-secondary me-1">Zur Übersicht</a>
+                    <a class="btn btn-primary" href="{{ path('admin_person_new') }}">Kandidat:in anlegen</a>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive bg-light-subtle">
+            <table class="table table-hover mb-0">
+                <thead class="border-primary border-3 border-top-0 border-start-0 border-end-0">
                 <tr>
-                    <th>Name</th>
-                    <th>Wahlrunde</th>
-                    <th>Aktionen</th>
+                    <th class="text-nowrap">Name</th>
+                    <th class="text-nowrap">Wahlrunde</th>
+                    <th class="text-end text-nowrap">Aktionen</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for person in people %}
                     <tr>
-                        <td>{{ person.name }}</td>
-                        <td>{{ person.election }}</td>
-                        <td>
+                        <td class="text-nowrap">{{ person.name }}</td>
+                        <td class="text-nowrap">{{ person.election }}</td>
+                        <td class="text-end text-nowrap">
                             <a href="{{ path('admin_person_edit', {'id': person.id}) }}">bearbeiten</a>
                         </td>
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="3">Keine Einträge vorhanden</td>
+                        <td colspan="3" class="text-nowrap">Keine Einträge vorhanden</td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
-            <a class="btn btn-primary" href="{{ path('admin_person_new') }}">Kandidat:in anlegen</a>
+        </div>
+        <div class="card-footer">
+            <div class="text-muted small">
+                Übersicht aller Kandidat:innen.
+            </div>
         </div>
     </div>
 </div>

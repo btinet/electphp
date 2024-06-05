@@ -4,11 +4,14 @@
 $primary: #0071BC;
 $list-group-item-padding-y: 1.2em;
 
+
+
 // the ~ allows you to reference things in node_modules
 @import "~bootstrap/scss/bootstrap";
 @import "~bootstrap-icons";
 
 @import "mdb.min";
+
 
 .list-group-item{
   padding-top: 1.2em;

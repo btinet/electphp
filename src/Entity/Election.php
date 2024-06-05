@@ -113,7 +113,8 @@ class Election
         return $this->people;
     }
 
-    public function getVotesPerPeople(): array{
+    public function getVotesPerPeople(): array
+    {
         $count = [];
         foreach ($this->getPeople() as $person) {
             if($person instanceof Person) {
@@ -121,6 +122,7 @@ class Election
             }
 
         }
+        return $count;
     }
 
     public function addPerson(Person $person): static

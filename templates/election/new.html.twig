@@ -1,22 +1,22 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Person{% endblock %}
+{% block title %}New Election{% endblock %}
 
 {% block body %}
     <div class="container pb-5">
         <div class="card">
             <div class="card-header">
                 <div class="d-flex justify-content-between align-items-center">
-                    <div class="fw-bold">Kandidat:in anlegen</div>
-                    <a href="{{ path('admin_person_index') }}" class="btn btn-secondary">Zurück</a>
+                    <div class="fw-bold">Wahlrunde anlegen</div>
+                    <a href="{{ path('crud_election_index') }}" class="btn btn-secondary">Zurück</a>
                 </div>
             </div>
             <div class="card-body bg-light-subtle">
-                {{ include('person/_form.html.twig') }}
+                {{ include('election/_form.html.twig') }}
             </div>
             <div class="card-footer">
-                <div class="text-muted small">
-                    Eine neue Person erstellen
+                <div class="text-danger small">
+                    Das Generieren der Wahlcodes nimmt einige Zeit in Anspruch. Bitte warten, bis die Seite geladen wurde.
                 </div>
             </div>
         </div>

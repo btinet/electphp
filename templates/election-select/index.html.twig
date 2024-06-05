@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Wahl{% endblock %}
+
+{% block body %}
+    <div class="container pb-5">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+                    <div class="fw-bold">{{ election.label }}</div>
+                    <div class="d-flex">
+                        <a href="{{ path('app_index') }}" class="btn btn-secondary me-1">Zur Übersicht</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body bg-light-subtle">
+                <form class="row row-cols-1 gy-5 needs-validation" method="POST" novalidate>
+                    {% if election.voices >= 1 %}
+                        <div class="col">
+                            <label for="code" class="form-label">Wahlcode</label>
+                            <input type="text" required autofocus class="form-control" id="code" name="code">
+                            <div class="invalid-feedback">
+                                Bitte den Wahlcode für die Wahl "{{ election.label }}" eingeben.
+                            </div>
+                        </div>
+                        {% for i in 1..election.voices %}
+                            <div class="col">
+                                <label for="election_{{ i }}" class="form-label">{{ i }}. Stimme</label>
+                                <select class="form-select" id="election_{{ i }}" name="election[]" required>
+                                    <option value="" selected disabled>Person wählen</option>
+                                    {% for person in election.people|sort((a, b) => a.name <=> b.name) %}
+                                        <option value="{{ person.id }}">{{ person }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        {% endfor %}
+                        <div class="col d-flex justify-content-between mb-5">
+                            <button type="submit" class="btn btn-lg btn-primary w-100">Abstimmen</button>
+                        </div>
+                    {% else %}
+                        <div class="col">
+                            <p>
+                                Für diese Wahl können keine Personen aufgestellt werden. Die Wahlen finden entsprechend der Regelungen laut Schulgesetz statt.
+                            </p>
+                        </div>
+                        <div class="col">
+                            <label for="code" class="form-label">Wahlcode</label>
+                            <input type="text" disabled required autofocus class="form-control disabled" inputmode="number" id="code" name="code">
+                            <div class="invalid-feedback">
+                                Bitte den Wahlcode für die Wahl "{{ election.label }}" eingeben.
+                            </div>
+                        </div>
+
+                        <div class="col d-flex justify-content-between mb-5">
+                            <button type="submit" disabled class="btn btn-lg btn-primary disabled w-100">Abstimmen</button>
+                        </div>
+                    {% endif %}
+
+                    <input type="hidden" name="token" value="{{ csrf_token('elect') }}">
+
+                    <div class="border-2 border rounded-3 p-3 bg-white border-danger">
+                        <p class="text-danger small">
+                            Ich bin nicht mit der Wahl einverstanden. Dies drücke ich aus, indem ich zwar wähle, jedoch
+                            meinen Stimmzettel ungültig mache und trotzdem den Button "Abstimmen" betätige. So wird der
+                            Wahlcode ungültig gemacht, meine getroffene Auswahl wird nicht erfasst.
+                        </p>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="invalidate" name="invalidate" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                                Stimmzettel ungültig machen
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer">
+                <div class="text-muted small">
+                    Wahlschein-Formular
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -40,7 +40,6 @@ class AppFixtures extends Fixture
             'Kollegsprecher:innen' => 4,
             'Jahrgangssprecher:innen Q3/4' => 4,
             'Jahrgangssprecher:innen Q1/2' => 4,
-            'Klassensprecher:innen E-Phase' => 0,
             'Lehrkräfte des Vertrauens' => 2
         ];
 

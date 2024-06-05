@@ -1,72 +1,64 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Wahl{% endblock %}
+{% block title %}Election index{% endblock %}
 
 {% block body %}
-    <div class="container pb-5">
-        <div class="p-1 p-md-5 mb-4 bg-body-tertiary rounded-3">
-            <div class="container-fluid py-5">
-                <a href="{{ path('app_index') }}" class="btn btn-secondary mb-5">Zur Übersicht</a>
-                <h1 class="h3 fw-bold">{{ election.label }}</h1>
-                <form class="row row-cols-1 gy-5 needs-validation" method="POST" novalidate>
-                    {% if election.voices >= 1 %}
-                        <div class="col">
-                            <label for="code" class="form-label">Wahlcode</label>
-                            <input type="text" required autofocus class="form-control" id="code" name="code">
-                            <div class="invalid-feedback">
-                                Bitte den Wahlcode für die Wahl "{{ election.label }}" eingeben.
-                            </div>
-                        </div>
-                        {% for i in 1..election.voices %}
-                            <div class="col">
-                                <label for="election_{{ i }}" class="form-label">{{ i }}. Stimme</label>
-                                <select class="form-select" id="election_{{ i }}" name="election[]" required>
-                                    <option value="" selected disabled>Person wählen</option>
-                                    {% for person in election.people|sort((a, b) => a.name <=> b.name) %}
-                                        <option value="{{ person.id }}">{{ person }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                        {% endfor %}
-                        <div class="col d-flex justify-content-between mb-5">
-                            <button type="submit" class="btn btn-lg btn-primary w-100">Abstimmen</button>
-                        </div>
-                    {% else %}
-                        <div class="col">
-                            <p>
-                                Für diese Wahl können keine Personen aufgestellt werden. Die Wahlen finden entsprechend der Regelungen laut Schulgesetz statt.
-                            </p>
-                        </div>
-                        <div class="col">
-                            <label for="code" class="form-label">Wahlcode</label>
-                            <input type="text" disabled required autofocus class="form-control disabled" inputmode="number" id="code" name="code">
-                            <div class="invalid-feedback">
-                                Bitte den Wahlcode für die Wahl "{{ election.label }}" eingeben.
-                            </div>
-                        </div>
-
-                        <div class="col d-flex justify-content-between mb-5">
-                            <button type="submit" disabled class="btn btn-lg btn-primary disabled w-100">Abstimmen</button>
-                        </div>
-                    {% endif %}
-
-                    <input type="hidden" name="token" value="{{ csrf_token('elect') }}">
-
-                    <div class="border-2 border rounded-3 p-3 bg-white border-danger">
-                        <p>
-                            Ich bin nicht mit der Wahl einverstanden. Dies drücke ich aus, indem ich zwar wähle, jedoch
-                            meinen Stimmzettel ungültig mache und trotzdem den Button "Abstimmen" betätige. So wird der
-                            Wahlcode ungültig gemacht, meine getroffene Auswahl wird nicht erfasst.
-                        </p>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="invalidate" name="invalidate" id="flexCheckDefault">
-                            <label class="form-check-label" for="flexCheckDefault">
-                                Stimmzettel ungültig machen
-                            </label>
-                        </div>
-                    </div>
-                </form>
+<div class="container pb-5">
+    <div class="card  rounded-3">
+        <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="fw-bold">Wahlrunden</div>
+                <div class="d-flex">
+                    <a href="{{ path('app_index') }}" class="btn btn-secondary me-1">Zur Übersicht</a>
+                    <a class="btn btn-primary" href="{{ path('crud_election_new') }}">Wahlrunde anlegen</a>
+                </div>
             </div>
         </div>
+        <div class="table-responsive bg-light-subtle">
+            <table class="table table-hover mb-0">
+                <thead class="border-primary border-3 border-top-0 border-start-0 border-end-0">
+                    <tr>
+                        <th class="text-nowrap">Wahl</th>
+                        <th class="text-nowrap">Stimmen</th>
+                        <th class="text-nowrap">nominiert</th>
+                        <th class="text-nowrap">Wahlcodes</th>
+                        <th class="text-nowrap">davon verwendet</th>
+                        <th class="text-end text-nowrap">Aktionen</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for election in elections %}
+                    <tr>
+                        <td class="text-nowrap">{{ election.label }}</td>
+                        <td class="text-nowrap">{{ election.voices }}</td>
+                        <td class="text-nowrap">{{ election.people.count }}</td>
+                        <td class="text-nowrap">{{ election.codes.count }}</td>
+                        {% set used_count = 0 %}
+                        {% for code in election.codes %}
+                            {% if code.used %}
+                                {% set used_count = used_count +1 %}
+                            {% endif %}
+                        {% endfor %}
+                        <td class="text-nowrap">{{ used_count }}</td>
+                        <td class="text-nowrap">
+                            <div class="d-flex justify-content-end">
+                                <a class="me-2" href="{{ path('crud_election_export_codes',{'id':election.id}) }}"><i class="bi bi-filetype-csv me-1"></i>Codes laden</a>
+                                <a class="" href="{{ path('crud_election_edit', {'id': election.id}) }}"><i class="bi bi-pencil me-1"></i>bearbeiten</a>
+                            </div>
+
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3">Keine Einträge gefunden</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer small text-muted">
+            Übersicht über alle Wahlrunden.
+        </div>
     </div>
+</div>
 {% endblock %}
