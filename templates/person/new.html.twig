@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Person{% endblock %}
+
+{% block body %}
+<div class="container pb-5">
+    <div class="p-1 p-md-5 mb-4 bg-body-tertiary rounded-3">
+        <div class="container-fluid py-5">
+            <a href="{{ path('admin_person_index') }}" class="btn btn-secondary mb-5">Zurück</a>
+            <h1 class="h3 fw-bold">Kandidat:in anlegen</h1>
+            {{ include('person/_form.html.twig') }}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -16,7 +16,7 @@ class AppController extends AbstractController
     {
         $elections = $entityManager->getRepository(Election::class)->findAll();
 
-        return $this->render('app/closed.html.twig', [
+        return $this->render('app/index.html.twig', [
             'elections' => $elections,
         ]);
     }

@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Person index{% endblock %}
+
+{% block body %}
+<div class="container pb-5">
+    <div class="p-1 p-md-5 mb-4 bg-body-tertiary rounded-3">
+        <div class="container-fluid py-5">
+            <a href="{{ path('app_index') }}" class="btn btn-secondary mb-5">Zur Übersicht</a>
+            <h1 class="h3 fw-bold">Kandidat:innen</h1>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Wahlrunde</th>
+                    <th>Aktionen</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for person in people %}
+                    <tr>
+                        <td>{{ person.name }}</td>
+                        <td>{{ person.election }}</td>
+                        <td>
+                            <a href="{{ path('admin_person_edit', {'id': person.id}) }}">bearbeiten</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3">Keine Einträge vorhanden</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <a class="btn btn-primary" href="{{ path('admin_person_new') }}">Kandidat:in anlegen</a>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

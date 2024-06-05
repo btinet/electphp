@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-#[Route('/election', name: 'election_')]
+#[Route('/admin/election', name: 'election_')]
 class ElectionController extends AbstractController
 {
 
