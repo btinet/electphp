@@ -23,13 +23,7 @@
                 </div>
             </div>
         </div>
-        <div class="card-body bg-light-subtle">
-
-            <p>Es sind noch {{ election.codes.count - used_count}} von {{ election.codes.count }} Wahlcodes übrig.</p>
-            <a href="{{ path('crud_election_export_codes',{'id':election.id}) }}" class="btn btn-sm btn-secondary">Wahlcodes laden</a>
-            <hr>
-        </div>
-        <div class="table-responsive bg-light-subtle">
+        <div class="table-responsive bg-light-subtle py-2">
             <table class="table table-hover mb-0" id="table">
                 <thead class="border-primary border-3 border-top-0 border-start-0 border-end-0">
                 <tr>
@@ -55,6 +49,11 @@
                 {% endfor %}
                 </tbody>
             </table>
+        </div>
+        <div class="card-body bg-light-subtle">
+
+            <p>Es sind noch {{ election.codes.count - used_count}} von {{ election.codes.count }} Wahlcodes übrig.</p>
+            <a href="{{ path('crud_election_export_codes',{'id':election.id}) }}" class="btn btn-sm btn-secondary">Wahlcodes laden</a>
         </div>
         <div class="card-footer">
             <div class="d-flex justify-content-end align-items-center">
