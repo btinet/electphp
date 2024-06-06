@@ -37,8 +37,7 @@
                             {% endif %}
 
                             <a class="toggle-election p-1" href="{{ url('crud_election_switch',{'id':election.id}) }}"  data-value="{{ election.id }}">
-                                <i class="like-icon-{{ election.id }} bi {{ like_icon }}"></i>
-                                <span class="spinner-border spinner-border-sm d-none like-loader-{{ election.id }}" role="status"></span>
+                                <i class="like-icon-{{ election.id }} bi {{ like_icon }}" style="font-size: .9rem"></i>
                             </a>
                         </td>
                         <td class="text-nowrap">{{ election.voices }}</td>

@@ -64,9 +64,6 @@ function loadPage(link) {
 
 function setLike(link, value){
     let likeIcon = App.findOneBy('.like-icon-'+value);
-    let likeLoader = App.findOneBy('.like-loader-'+value);
-    App.setClass(likeIcon,'d-none');
-    App.setClass(likeLoader,'d-none',true);
     let data = {};
     data.id = value;
     let json = JSON.stringify(data);
@@ -76,8 +73,6 @@ function setLike(link, value){
     xhr.onload = function() {
         if (xhr.status === 200) {
             let response = JSON.parse(xhr.responseText);
-            App.setClass(likeIcon,'d-none',true);
-            App.setClass(likeLoader,'d-none');
             if(response.electionActive)
             {
                 App.setClass(likeIcon,'bi-toggle-on');
