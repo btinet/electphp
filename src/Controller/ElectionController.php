@@ -9,8 +9,10 @@ use App\Form\ElectionType;
 use App\Repository\ElectionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use ParseCsv\Csv;
+use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\HeaderUtils;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -184,6 +186,23 @@ class ElectionController extends AbstractController
         );
         $response->headers->set('Content-Disposition', $disposition);
         return $response;
+    }
+
+    #[Route('/{id}/switch', name: 'switch', methods: ['POST'])]
+    public function addLike(Request $request, Election $election, EntityManagerInterface $entityManager): JsonResponse
+    {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
+        $data = json_decode($request->getContent(),true);
+
+        $election->setIsActive(!$election->isIsActive());
+        $entityManager->persist($election);
+        $entityManager->flush();
+
+
+        return new JsonResponse([
+            'electionActive' => $election->isIsActive(),
+        ]);
     }
 
 }

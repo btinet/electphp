@@ -34,6 +34,9 @@ class Election
     #[ORM\Column(nullable: true)]
     private ?int $voices = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $isActive = null;
+
     public function __construct()
     {
         $this->codes = new ArrayCollection();
@@ -182,6 +185,18 @@ class Election
     public function setVoices(?int $voices): static
     {
         $this->voices = $voices;
+
+        return $this;
+    }
+
+    public function isIsActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(?bool $isActive): static
+    {
+        $this->isActive = $isActive;
 
         return $this;
     }

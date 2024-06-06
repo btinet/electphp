@@ -14,7 +14,7 @@ class AppController extends AbstractController
     #[Route('/', name: 'index')]
     public function index(EntityManagerInterface $entityManager): Response
     {
-        $elections = $entityManager->getRepository(Election::class)->findAll();
+        $elections = $entityManager->getRepository(Election::class)->findBy(['isActive' => true]);
 
         return $this->render('app/index.html.twig', [
             'elections' => $elections,
