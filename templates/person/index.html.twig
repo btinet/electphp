@@ -9,7 +9,6 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div class="fw-bold">Kandidat:innen</div>
                 <div class="d-flex">
-                    <a href="{{ path('app_index') }}" class="btn btn-secondary me-1">Zur Übersicht</a>
                     <a class="btn btn-primary" href="{{ path('admin_person_new') }}">Kandidat:in anlegen</a>
                 </div>
             </div>
@@ -24,10 +23,10 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for person in people %}
+                {% for person in people|sort((a, b) => a.name <=> b.name) %}
                     <tr>
                         <td class="text-nowrap">{{ person.name }}</td>
-                        <td class="text-nowrap">{{ person.election }}</td>
+                        <td class="text-nowrap"><a href="{{ path('crud_election_show',{'id':person.election.id}) }}">{{ person.election.label }}</a></td>
                         <td class="text-end text-nowrap">
                             <a href="{{ path('admin_person_edit', {'id': person.id}) }}">bearbeiten</a>
                         </td>

@@ -2,33 +2,99 @@
 
 {% block title %}Election{% endblock %}
 
+{% set used_count = 0 %}
+{% for code in election.codes %}
+    {% if code.used %}
+        {% set used_count = used_count +1 %}
+    {% endif %}
+{% endfor %}
+
 {% block body %}
-    <h1>Election</h1>
+<div class="container pb-5">
+    <div class="card mb-3  rounded-3">
+        <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="fw-bold">Wahlrunde im Detail</div>
+                <div class="d-flex">
+                    <a class="btn btn-secondary" href="{{ path('crud_election_index') }}"><i class="bi bi-chevron-left me-2"></i>Zurück</a>
+                </div>
+            </div>
+        </div>
+        <div class="card-body bg-light-subtle">
+            <div class="h4">{{ election }}</div>
+            <p>Es sind noch {{ election.codes.count - used_count}} von {{ election.codes.count }} Wahlcodes übrig.</p>
+            <a href="{{ path('crud_election_export_codes',{'id':election.id}) }}" class="btn btn-sm btn-secondary">Wahlcodes laden</a>
+        </div>
+        <div class="table-responsive bg-light-subtle">
+            <table class="table table-hover mb-0">
+                <thead class="border-primary border-3 border-top-0 border-start-0 border-end-0">
+                <tr>
+                    <th class="text-nowrap">Name</th>
+                    <th class="text-nowrap">Stimmenanteile</th>
+                    <th class="text-end text-nowrap">Aktionen</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for person in election.people|sort((a, b) => a.name <=> b.name) %}
+                    <tr>
+                        <td class="text-nowrap">{{ person.name }}</td>
+                        {% if election.electionResults.count == 0 %}
+                            {% set electionresult = 0 %}
+                            {% else %}
+                                {% set electionresult = (person.electionresults.count / election.electionResults.count * 100)|round %}
+                        {% endif %}
+                        <td class="text-nowrap">{{ electionresult }}%</td>
+                        <td class="text-end text-nowrap">
+                            <a href="{{ path('admin_person_edit', {'id': person.id}) }}">bearbeiten</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3" class="text-nowrap">Keine Einträge vorhanden</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <div class="card-footer">
+                <div class="d-flex justify-content-end align-items-center">
+                    <a class="btn btn-primary" href="{{ path('crud_election_edit', {'id': election.id}) }}">bearbeiten</a>
+                </div>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ election.id }}</td>
-            </tr>
-            <tr>
-                <th>Label</th>
-                <td>{{ election.label }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ election.description }}</td>
-            </tr>
-            <tr>
-                <th>Voices</th>
-                <td>{{ election.voices }}</td>
-            </tr>
-        </tbody>
-    </table>
+            </div>
+        </div>
+    </div>
 
-    <a href="{{ path('crud_election_index') }}">back to list</a>
+    <div class="row row-cols-1 g-3 row-cols-md-3 mb-3">
+        <div class="col">
+            <div class="card bg-primary text-light">
+                <div class="card-body">
+                    <div class="lead">Wahlstimmen</div>
+                    <div class="display-2">{{ election.voices }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card bg-secondary text-light">
+                <div class="card-body">
+                    <div class="lead">Nominiert</div>
+                    <div class="display-2">{{ election.people.count }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card bg-info text-light">
+                <div class="card-body">
+                    <div class="lead">Wahlbeteiligung</div>
+                    <div class="display-2">{{ (used_count / election.codes.count * 100)|round }}%</div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <a href="{{ path('crud_election_edit', {'id': election.id}) }}">edit</a>
+</div>
 
-    {{ include('election/_delete_form.html.twig') }}
+
+
+
+
 {% endblock %}
