@@ -27,9 +27,10 @@
 
             <p>Es sind noch {{ election.codes.count - used_count}} von {{ election.codes.count }} Wahlcodes übrig.</p>
             <a href="{{ path('crud_election_export_codes',{'id':election.id}) }}" class="btn btn-sm btn-secondary">Wahlcodes laden</a>
+            <hr>
         </div>
         <div class="table-responsive bg-light-subtle">
-            <table class="table table-hover mb-0">
+            <table class="table table-hover mb-0" id="table">
                 <thead class="border-primary border-3 border-top-0 border-start-0 border-end-0">
                 <tr>
                     <th class="text-nowrap">Name</th>
@@ -50,10 +51,6 @@
                         <td class="text-end text-nowrap">
                             <a href="{{ path('admin_person_edit', {'id': person.id}) }}">bearbeiten</a>
                         </td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="3" class="text-nowrap">Keine Einträge vorhanden</td>
                     </tr>
                 {% endfor %}
                 </tbody>

@@ -12,6 +12,28 @@ $list-group-item-padding-y: 1.2em;
 
 @import "mdb.min";
 
+@import "datatables.net-dt/css/dataTables.dataTables.min.css";
+
+.dt-info,.dt-length{
+  padding-left: 1.5rem;
+}
+
+.dt-length > select {
+  margin-right: .5rem;
+}
+
+.dt-paging,.dt-search{
+  padding-right: 1.5rem;
+}
+
+#table tr td:first-child, #table tr th:first-child {
+  padding-left: 1.5rem!important;
+}
+#table tr td:last-child, #table tr th:last-child {
+  padding-right: 1.5rem!important;
+}
+
+
 
 .list-group-item{
   padding-top: 1.2em;

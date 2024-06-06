@@ -14,7 +14,7 @@
             </div>
         </div>
         <div class="table-responsive bg-light-subtle">
-            <table class="table table-hover mb-0">
+            <table class="table table-hover mb-0" id="table">
                 <thead class="border-primary border-3 border-top-0 border-start-0 border-end-0">
                     <tr>
                         <th class="text-nowrap">Wahl</th>
@@ -58,10 +58,6 @@
                             </div>
 
                         </td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="7">Keine Einträge gefunden</td>
                     </tr>
                 {% endfor %}
                 </tbody>

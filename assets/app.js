@@ -9,6 +9,10 @@
 import './styles/global.scss';
 import IMask from 'imask';
 import Core from "./app/core.js";
+import DataTable from 'datatables.net-dt';
+import 'datatables.net-buttons-dt';
+import 'datatables.net-buttons/js/buttons.html5.mjs';
+import 'datatables.net-responsive-dt';
 
 const $ = require('jquery');
 // this "modifies" the jquery module: adding behavior to it
@@ -21,6 +25,16 @@ require('bootstrap');
 
 const App = new Core();
 let linkButtons = App.findBy('.toggle-election');
+
+let tableOptions = {
+    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/German.json"
+}
+
+
+let table = new DataTable('#table', {
+    responsive: true,
+    "language": tableOptions
+});
 
 createLinkAction(linkButtons,setLike,'href','data-value')
 

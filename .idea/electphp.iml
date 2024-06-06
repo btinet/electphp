@@ -141,5 +141,9 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="chart.js" level="application" />
+    <orderEntry type="library" name="dataTables.material" level="application" />
+    <orderEntry type="library" name="datatables" level="application" />
+    <orderEntry type="library" name="twitter-bootstrap" level="application" />
+    <orderEntry type="library" name="dataTables.bootstrap5" level="application" />
   </component>
 </module>
