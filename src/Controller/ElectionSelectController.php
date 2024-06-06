@@ -23,6 +23,20 @@ class ElectionSelectController extends AbstractController
     #[Route('/show/{id}', name: 'show')]
     public function show(Request $request, EntityManagerInterface $entityManager, int $id): Response
     {
+
+        $backgroundColor = [
+            '#fff100',
+            '#ff8c00',
+            '#e81123',
+            '#ec008c',
+            '#68217a',
+            '#00188f',
+            '#00bcf2',
+            '#00b294',
+            '#009e49',
+            '#bad80a',
+        ];
+
         $election = $entityManager->getRepository(Election::class)->find($id);
 
         $submittedToken = $request->request->get('token');
@@ -63,7 +77,8 @@ class ElectionSelectController extends AbstractController
         }
 
         return $this->render('election-select/index.html.twig', [
-            'election' => $election
+            'election' => $election,
+            'colors' => $backgroundColor
         ]);
     }
 
