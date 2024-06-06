@@ -28,6 +28,7 @@
                 <thead class="border-primary border-3 border-top-0 border-start-0 border-end-0">
                 <tr>
                     <th class="text-nowrap">Name</th>
+                    <th class="text-nowrap">Stimmen</th>
                     <th class="text-nowrap">Stimmenanteile</th>
                     <th class="text-end text-nowrap">Aktionen</th>
                 </tr>
@@ -41,6 +42,7 @@
                             {% else %}
                                 {% set electionresult = (person.electionresults.count / election.electionResults.count * 100)|round(2) %}
                         {% endif %}
+                        <td class="text-nowrap">{{ person.electionresults.count }}</td>
                         <td class="text-nowrap">{{ electionresult }}%</td>
                         <td class="text-end text-nowrap">
                             <a href="{{ path('admin_person_edit', {'id': person.id}) }}">bearbeiten</a>
