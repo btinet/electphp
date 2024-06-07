@@ -15,13 +15,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Uid\Uuid;
 
-#[Route('/election-select', name: 'election_')]
+#[Route('/', name: 'election_')]
 class ElectionSelectController extends AbstractController
 {
 
-    #[Route('/show/{id}', name: 'show')]
-    public function show(Request $request, EntityManagerInterface $entityManager, int $id): Response
+    #[Route('/{uuid}', name: 'show')]
+    public function show(Request $request, EntityManagerInterface $entityManager, Uuid $uuid): Response
     {
 
         $backgroundColor = [
@@ -37,7 +38,7 @@ class ElectionSelectController extends AbstractController
             '#bad80a',
         ];
 
-        $election = $entityManager->getRepository(Election::class)->find($id);
+        $election = $entityManager->getRepository(Election::class)->findOneBy(['uuid' => $uuid]);
 
         $submittedToken = $request->request->get('token');
 

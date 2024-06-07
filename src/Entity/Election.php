@@ -7,6 +7,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Types\UlidType;
+use Symfony\Bridge\Doctrine\Types\UuidType;
+use Symfony\Component\Uid\Ulid;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ElectionRepository::class)]
 class Election
@@ -18,6 +22,9 @@ class Election
 
     #[ORM\Column(length: 255)]
     private ?string $label = null;
+
+    #[ORM\Column(type: UuidType::NAME, unique: true)]
+    private Uuid $uuid;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
@@ -49,6 +56,11 @@ class Election
         return $this->label;
     }
 
+    public function getUuid(): Uuid
+    {
+        return $this->uuid;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -62,7 +74,8 @@ class Election
     public function setLabel(string $label): static
     {
         $this->label = $label;
-
+        $namespace = Uuid::fromString(Uuid::NAMESPACE_URL);
+        $this->uuid = Uuid::v3($namespace, $label);
         return $this;
     }
 
