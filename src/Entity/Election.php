@@ -9,10 +9,12 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Bridge\Doctrine\Types\UuidType;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ElectionRepository::class)]
+#[UniqueEntity('label')]
 class Election
 {
     #[ORM\Id]
