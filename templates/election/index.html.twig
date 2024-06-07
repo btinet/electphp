@@ -19,8 +19,8 @@
                     <tr>
                         <th class="text-nowrap">Wahl</th>
                         <th class="text-nowrap text-center">aktiv</th>
-                        <th class="text-nowrap">Stimmen</th>
-                        <th class="text-nowrap">nominiert</th>
+                        <th class="text-nowrap">Wahlstimmen</th>
+                        <th class="text-nowrap">Kandidat:innen</th>
                         <th class="text-nowrap">Wahlcodes</th>
                         <th class="text-nowrap">davon verwendet</th>
                         <th class="text-end text-nowrap">Aktionen</th>
@@ -53,7 +53,11 @@
                         <td class="text-nowrap">
                             <div class="d-flex justify-content-end">
                                 <a class="me-2" href="{{ path('crud_election_export_codes',{'id':election.id}) }}"><i class="text-dark bi bi-filetype-csv me-1"></i>Codes laden</a>
-                                <a class="" href="{{ path('crud_election_edit', {'id': election.id}) }}"><i class="text-dark bi bi-pencil me-1"></i>bearbeiten</a>
+                                {% if used_count == 0 %}
+                                    <a class="" href="{{ path('crud_election_edit', {'id': election.id}) }}"><i class="text-dark bi bi-pencil me-1"></i>bearbeiten</a>
+                                {% else %}
+                                    <span class="text-muted"><i class="text-dark bi bi-pencil me-1"></i>bearbeiten</span>
+                                {% endif %}
                             </div>
 
                         </td>

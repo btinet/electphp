@@ -45,7 +45,7 @@
                         <td class="text-nowrap">{{ person.electionresults.count }}</td>
                         <td class="text-nowrap">{{ electionresult }}%</td>
                         <td class="text-end text-nowrap">
-                            <a href="{{ path('admin_person_edit', {'id': person.id}) }}">bearbeiten</a>
+                            <a href="{{ path('admin_person_edit', {'id': person.id}) }}"><i class="text-dark bi bi-pencil me-1"></i>bearbeiten</a>
                         </td>
                     </tr>
                 {% endfor %}
@@ -53,13 +53,28 @@
             </table>
         </div>
         <div class="card-body bg-light-subtle">
-
-            <p>Es sind noch {{ election.codes.count - used_count}} von {{ election.codes.count }} Wahlcodes übrig.</p>
-            <a href="{{ path('crud_election_export_codes',{'id':election.id}) }}" class="btn btn-sm btn-secondary">Wahlcodes laden</a>
-            <p class="mt-3">
-                Link zur Wahl:<br>
-                <a class="user-select-all" href="{{ path('election_show',{'uuid':election.uuid}) }}">{{ url('election_show',{'uuid':election.uuid}) }}</a>
-            </p>
+            <div class="row row-cols-1 g-3">
+                <div class="col">
+                    <div class="d-flex justify-content-between align-items-center border-bottom">
+                        <div>Verfügbare Wahlcodes</div>
+                        <div>{{ election.codes.count - used_count}} / {{ election.codes.count }}</div>
+                    </div>
+                    <div class="d-flex justify-content-start align-items-center mt-2">
+                        <a href="{{ path('crud_election_export_codes',{'id':election.id}) }}" class="btn btn-sm btn-light me-2"><i class="bi bi-download me-2"></i>Wahlcodes laden</a>
+                        <a href="#" class="btn btn-sm btn-light disabled"><i class="bi bi-printer-fill me-2"></i>Wahlscheine drucken</a>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>Wahl aufrufen</div>
+                        <div></div>
+                    </div>
+                    <div class="d-flex justify-content-start align-items-center mt-2">
+                        <a class="btn btn-sm btn-light me-2" href="{{ path('election_show',{'uuid':election.uuid}) }}"><i class="bi bi-box-arrow-up-right me-2"></i>Wahl-Link öffnen</a>
+                        <code class="user-select-all">{{ url('election_show',{'uuid':election.uuid}) }}</code>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="card-footer">
             <div class="d-flex justify-content-between align-items-center">
@@ -73,8 +88,11 @@
                         <i class="like-icon-{{ election.id }} bi {{ like_icon }}" style="font-size: 1.4rem"></i>
                     </a>
                 </div>
-
-                <a class="btn btn-primary" href="{{ path('crud_election_edit', {'id': election.id}) }}">bearbeiten</a>
+                {% if used_count == 0 %}
+                    <a class="btn btn-primary" href="{{ path('crud_election_edit', {'id': election.id}) }}">Wahlrunde bearbeiten</a>
+                {% else %}
+                    <span class="text-danger small">Nach Wahlbeginn sind weitere Änderungen nicht mehr möglich.</span>
+                {% endif %}
             </div>
         </div>
     </div>

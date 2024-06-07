@@ -96,6 +96,15 @@ class ElectionController extends AbstractController
     #[Route('/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Election $election, EntityManagerInterface $entityManager): Response
     {
+
+        foreach ($election->getCodes() as $code) {
+            /** @var $code ElectionCode */
+            if($code->isUsed()) {
+                $this->addFlash('warning',sprintf("Wahlrunde '%s' hat bereits begonnen. Änderungen nicht mehr möglich.",$election));
+                return $this->redirectToRoute('crud_election_index', [], Response::HTTP_SEE_OTHER);
+            }
+        }
+
         $form = $this->createForm(ElectionType::class, $election);
         $form->get('code-amount')->setData($election->getCodes()->count());
         $form->handleRequest($request);
