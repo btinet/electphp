@@ -37,10 +37,12 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $elections = [
-            'Kollegsprecher:innen' => 4,
-            'Jahrgangssprecher:innen Q3/4' => 4,
-            'Jahrgangssprecher:innen Q1/2' => 4,
-            'Lehrkräfte des Vertrauens' => 2
+            'Kollegsprecher:innen 2024/25' => 4,
+            'Jahrgangssprecher:innen Q3/4 2024/25' => 4,
+            'Jahrgangssprecher:innen Q1/2 2024/25' => 4,
+            'Lehrkräfte des Vertrauens 2024/25' => 2,
+            'Bundeskanzler:in 2024/25' => 1,
+            '14. Gesamtkonferenz TOP 3' => 1
         ];
 
         foreach ($elections as $electionEntry => $electionVoices) {
@@ -50,7 +52,7 @@ class AppFixtures extends Fixture
 
             $manager->persist($election);
 
-            for ($i = 1; $i <= 180; $i++) {
+            for ($i = 1; $i <= 50; $i++) {
                 $code = new ElectionCode();
                 $code->setCode($this->generateCode(5));
                 $code->setElection($election);
@@ -62,12 +64,23 @@ class AppFixtures extends Fixture
         $manager->flush();
 
         $user = new User();
-        $user->setUsername('admin');
-
+        $user->setUsername('superadmin');
         $password = $this->hasher->hashPassword($user, 'Camilla@23');
         $user->setPassword($password);
-
         $manager->persist($user);
+
+        $user = new User();
+        $user->setUsername('sladmin');
+        $password = $this->hasher->hashPassword($user, 'EVc7AdTwduJz0tRunqMR');
+        $user->setPassword($password);
+        $manager->persist($user);
+
+        $user = new User();
+        $user->setUsername('kvadmin');
+        $password = $this->hasher->hashPassword($user, 'wcM9LnvizkdkYN61VFCw');
+        $user->setPassword($password);
+        $manager->persist($user);
+
         $manager->flush();
 
     }
