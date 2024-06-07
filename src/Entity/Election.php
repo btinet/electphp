@@ -80,7 +80,7 @@ class Election
     {
         $this->label = $label;
         $namespace = Uuid::fromString(Uuid::NAMESPACE_URL);
-        $this->uuid = Uuid::v3($namespace, $label);
+        $this->uuid = Uuid::v3($namespace, $label . date("ymdHis"));
         return $this;
     }
 
