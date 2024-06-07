@@ -14,7 +14,10 @@ use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ElectionRepository::class)]
-#[UniqueEntity('label')]
+#[UniqueEntity(
+    fields: ['label'],
+    message: 'Die Bezeichnung der Wahlrunde muss eindeutig sein.'
+)]
 class Election
 {
     #[ORM\Id]
