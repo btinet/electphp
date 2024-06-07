@@ -65,14 +65,14 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex justify-content-between align-items-center border-bottom">
                         <div>Wahl aufrufen</div>
-                        <div></div>
+                        <div class="d-flex justify-content-start align-items-center">
+                            <code class="user-select-all">{{ url('election_show',{'uuid':election.uuid}) }}</code>
+                        </div>
                     </div>
-                    <div class="d-flex justify-content-start align-items-center mt-2">
-                        <a class="btn btn-sm btn-light me-2" href="{{ path('election_show',{'uuid':election.uuid}) }}"><i class="bi bi-box-arrow-up-right me-2"></i>Wahl-Link öffnen</a>
-                        <code class="user-select-all">{{ url('election_show',{'uuid':election.uuid}) }}</code>
-                    </div>
+                    <img src="{{ url('crud_election_create_qr', {'id': election.uuid}) }}" width="250" class="img-fluid mt-2" alt="QR-Code">
+                    <a class="btn btn-sm btn-light me-2" href="{{ path('election_show',{'uuid':election.uuid}) }}"><i class="bi bi-box-arrow-up-right me-2"></i>Wahl-Link öffnen</a>
                 </div>
             </div>
         </div>
