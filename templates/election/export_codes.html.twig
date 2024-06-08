@@ -15,12 +15,12 @@
 </head>
 <body>
     <h1>{{ election }}</h1>
-    <div class="row row-cols-1 g-3">
+    <div class="row row-cols-2 g-3">
         {% for code in election.codes %}
             {% if not code.used %}
                 <div class="col py-5 border-bottom">
                     <div class="d-flex align-items-center justify-content-start">
-                        <img src="{{ path('app_create_sw_qr', {'id': election.uuid,'code':code}) }}" width="100%" class="img-fluid" alt="QR-Code">
+                        <img src="{{ path('app_create_sw_qr', {'id': election.uuid,'code':code}) }}" width="250" class="img-fluid" alt="QR-Code">
                         <div>{{ code }}</div>
                     </div>
                 </div>
