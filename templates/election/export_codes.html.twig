@@ -14,7 +14,7 @@
         {% if not code.used %}
             {% set i = i + 1  %}
             <h4>{{ election }}</h4>
-            <img src="{{ url('app_create_sw_qr', {'id': election.uuid,'code':code}) }}" width="150" alt="QR-Code" style="width: 150px!important;height:150px!important;">
+            <img src="{{ url('app_create_sw_qr', {'id': election.uuid,'code':code}) }}" width="100" alt="QR-Code" style="width: 100px!important;height:100px!important;text-align: start!important;">
             <p>
                 Sie haben {{ election.voices }} Wahlstimmen.<br>
                 Wahlcode: <b>{{ code }}</b>
