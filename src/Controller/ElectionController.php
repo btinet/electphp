@@ -14,12 +14,15 @@ use chillerlan\QRCode\QRCode;
 use chillerlan\QRCode\QROptions;
 use Doctrine\ORM\EntityManagerInterface;
 use ParseCsv\Csv;
+use Pontedilana\PhpWeasyPrint\Pdf;
+use Pontedilana\WeasyprintBundle\WeasyPrint\Response\PdfResponse;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -290,8 +293,8 @@ class ElectionController extends AbstractController
         exit;
     }
 
-    #[Route('/swqr/{id}', name: 'create_sw_qr', methods: ['GET'])]
-    public function createSWQR(Uuid $id)
+    #[Route('/swqr/{id}/{code?}', name: 'create_sw_qr', methods: ['GET'])]
+    public function createSWQR(Uuid $id, ?string $code)
     {
         $data = $this->generateUrl('election_show',['uuid' => $id],UrlGeneratorInterface::ABSOLUTE_URL);
         $options = new QROptions;
@@ -346,6 +349,27 @@ class ElectionController extends AbstractController
         }
         echo $out;
         exit;
+    }
+
+    #[Route('/export/{id}/pdf', name: 'export_qr_pdf', methods: ['GET'])]
+    public function exportElectionCodes(Election $election, Pdf $pdf): PdfResponse
+    {
+        $html = $this->render('election/export_codes.html.twig',[
+            'election' => $election
+        ]);
+
+        $pdfContent = $pdf->getOutputFromHtml($html);
+
+        return new PdfResponse(
+            content: $pdfContent,
+            fileName: 'Wahlschein.pdf',
+            contentType: 'application/pdf',
+            contentDisposition: ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            // or download the file instead of displaying it in the browser with
+            // contentDisposition: ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            status: 200,
+            headers: []
+        );
     }
 
 }

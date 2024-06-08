@@ -16,7 +16,8 @@
                 </div>
             </div>
             <div class="card-body bg-light-subtle">
-                <form class="row row-cols-1 gy-5 needs-validation" method="POST" novalidate>
+                {% if election.isActive %}
+                    <form class="row row-cols-1 gy-5 needs-validation" method="POST" novalidate>
                     {% if election.voices >= 1 %}
                         <div class="col">
                             <label for="code" class="form-label">Wahlcode</label>
@@ -74,6 +75,14 @@
                         </div>
                     </div>
                 </form>
+                    {% else %}
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle-fill me-2"></i>Diese Wahlrunde ist noch nicht oder nicht mehr aktiv.
+                    </div>
+                        <p>
+                            Warten Sie auf die Anweisungen der Wahlleitung oder versuchen Sie es später erneut.
+                        </p>
+                {% endif %}
             </div>
             <div class="card-footer">
                 <div class="text-muted small">

@@ -22,6 +22,11 @@ class ElectionCode
     #[ORM\Column(nullable: true)]
     private ?bool $used = null;
 
+    public function __toString(): string
+    {
+        return $this->code;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

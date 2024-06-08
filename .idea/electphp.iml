@@ -141,6 +141,8 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/polyfill-uuid" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/chillerlan/php-settings-container" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/chillerlan/php-qrcode" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/pontedilana/weasyprint-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/pontedilana/php-weasyprint" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

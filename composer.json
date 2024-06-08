@@ -14,6 +14,7 @@
         "parsecsv/php-parsecsv": "^1.3",
         "phpdocumentor/reflection-docblock": "^5.3",
         "phpstan/phpdoc-parser": "^1.24",
+        "pontedilana/weasyprint-bundle": "^2.1",
         "symfony/apache-pack": "^1.0",
         "symfony/asset": "6.3.*",
         "symfony/console": "6.3.*",
