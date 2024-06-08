@@ -1,19 +1,23 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Wahlcodes für die {{ election }}-Wahl{% endblock %}
-
-{% block body %}
-<div class="container pb-5">
-    <h1>{{ election }}-Wahl</h1>
-    <div class="row row-cols-3 g-3">
-        {% for code in election.codes %}
-            {% if not code.used %}
+<!doctype html>
+<html lang="de">
+<head>
+    <title>Wahlcodes für {{ election }}</title>
+    <link rel="stylesheet" href="https://unpkg.com/gutenberg-css@0.7" media="print">
+</head>
+<body>
+    <h1>{{ election }}</h1>
+    {% for code in election.codes %}
+        {% if not code.used %}
             <figure>
-                <img src="{{ url('crud_election_create_sw_qr', {'id': election.uuid,'code':code}) }}" width="100%" class="img-fluid" alt="QR-Code">
+                <img src="{{ absolute_url('crud_election_create_sw_qr', {'id': election.uuid,'code':code}) }}" width="100%" class="img-fluid" alt="QR-Code">
                 <figcaption>{{ code }}</figcaption>
             </figure>
-            {% endif %}
-        {% endfor %}
-    </div>
-</div>
-{% endblock %}
+        {% endif %}
+    {% endfor %}
+</body>
+</html>
+
+
+
+
+
