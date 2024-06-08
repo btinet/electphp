@@ -71,7 +71,7 @@
                             <code class="user-select-all">{{ url('election_show',{'uuid':election.uuid}) }}</code>
                         </div>
                     </div>
-                    <img src="{{ url('crud_election_create_sw_qr', {'id': election.uuid}) }}" width="150" class="img-fluid mt-2 border rounded rounded-1" alt="QR-Code">
+                    <img src="{{ url('app_create_sw_qr', {'id': election.uuid}) }}" width="150" class="img-fluid mt-2 border rounded rounded-1" alt="QR-Code">
                     <a class="btn btn-sm btn-light me-2" href="{{ path('election_show',{'uuid':election.uuid}) }}"><i class="bi bi-box-arrow-up-right me-2"></i>Wahl-Link öffnen</a>
                 </div>
             </div>

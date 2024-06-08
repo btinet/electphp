@@ -9,7 +9,7 @@
     {% for code in election.codes %}
         {% if not code.used %}
             <figure>
-                <img src="{{ absolute_url('crud_election_create_sw_qr', {'id': election.uuid,'code':code}) }}" width="100%" class="img-fluid" alt="QR-Code">
+                <img src="{{ path('app_create_sw_qr', {'id': election.uuid,'code':code}) }}" width="100%" class="img-fluid" alt="QR-Code">
                 <figcaption>{{ code }}</figcaption>
             </figure>
         {% endif %}
