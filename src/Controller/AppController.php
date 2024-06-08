@@ -40,7 +40,7 @@ class AppController extends AbstractController
     #[Route('/swqr/{id}/{code?}', name: 'create_sw_qr', methods: ['GET'])]
     public function createSWQR(Uuid $id, ?string $code)
     {
-        $data = $this->generateUrl('election_show',['uuid' => $id],UrlGeneratorInterface::ABSOLUTE_URL);
+        $data = $this->generateUrl('election_show',['uuid' => $id,'code' => $code],UrlGeneratorInterface::ABSOLUTE_URL);
         $options = new QROptions;
 
         $options->version              = 7;

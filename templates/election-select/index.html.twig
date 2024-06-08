@@ -21,7 +21,7 @@
                     {% if election.voices >= 1 %}
                         <div class="col">
                             <label for="code" class="form-label">Wahlcode</label>
-                            <input type="text" required autofocus class="form-control" id="code" name="code">
+                            <input type="text" required autofocus class="form-control" id="code" name="code" value="{{ code }}">
                             <div class="invalid-feedback">
                                 Bitte den Wahlcode für die Wahl "{{ election.label }}" eingeben.
                             </div>

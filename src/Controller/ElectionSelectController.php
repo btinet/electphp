@@ -21,8 +21,8 @@ use Symfony\Component\Uid\Uuid;
 class ElectionSelectController extends AbstractController
 {
 
-    #[Route('/{uuid}', name: 'show')]
-    public function show(Request $request, EntityManagerInterface $entityManager, Uuid $uuid): Response
+    #[Route('/{uuid}/{?code}', name: 'show')]
+    public function show(Request $request, EntityManagerInterface $entityManager, Uuid $uuid, ?string $code): Response
     {
 
         $backgroundColor = [
@@ -79,7 +79,8 @@ class ElectionSelectController extends AbstractController
 
         return $this->render('election-select/index.html.twig', [
             'election' => $election,
-            'colors' => $backgroundColor
+            'colors' => $backgroundColor,
+            'code' => $code
         ]);
     }
 
