@@ -24,6 +24,7 @@ class ElectionSelectController extends AbstractController
     #[Route('/{uuid}/{?code}', name: 'show')]
     public function show(Request $request, EntityManagerInterface $entityManager, Uuid $uuid, ?string $code): Response
     {
+        $code = $request->get('code') ?? null;
 
         $backgroundColor = [
             '#fff100',
