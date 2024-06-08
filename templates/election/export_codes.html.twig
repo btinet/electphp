@@ -2,18 +2,32 @@
 <html lang="de">
 <head>
     <title>Wahlcodes für {{ election }}</title>
-    <link rel="stylesheet" href="https://unpkg.com/gutenberg-css@0.7" media="print">
+    <meta charset="UTF-8">
+    <meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'>
+
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
 </head>
 <body>
     <h1>{{ election }}</h1>
-    {% for code in election.codes %}
-        {% if not code.used %}
-            <figure>
-                <img src="{{ path('app_create_sw_qr', {'id': election.uuid,'code':code}) }}" width="100%" class="img-fluid" alt="QR-Code">
-                <figcaption>{{ code }}</figcaption>
-            </figure>
-        {% endif %}
-    {% endfor %}
+    <div class="row row-cols-1 g-3">
+        {% for code in election.codes %}
+            {% if not code.used %}
+                <div class="col py-5 border-bottom">
+                    <div class="d-flex align-items-center justify-content-start">
+                        <img src="{{ path('app_create_sw_qr', {'id': election.uuid,'code':code}) }}" width="100%" class="img-fluid" alt="QR-Code">
+                        <div>{{ code }}</div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+
 </body>
 </html>
 
