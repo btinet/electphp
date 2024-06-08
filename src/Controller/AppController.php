@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Election;
 use Doctrine\ORM\EntityManagerInterface;
+use Pontedilana\PhpWeasyPrint\Pdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,6 +19,14 @@ class AppController extends AbstractController
 
         return $this->render('app/index.html.twig', [
             'elections' => $elections,
+        ]);
+    }
+
+    #[Route('/export/{id}/html', name: 'export_qr_html', methods: ['GET'])]
+    public function viewElectionCodes(Election $election, Pdf $pdf): Response
+    {
+        return $this->render('election/export_codes.html.twig',[
+            'election' => $election
         ]);
     }
 
