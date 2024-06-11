@@ -161,7 +161,9 @@ class ResetPasswordController extends AbstractController
             return $this->redirectToRoute('app_check_email');
         }
 
-        $email = (new TemplatedEmail())
+        $mailBody = $this->renderView('reset_password/email.html.twig',['resetToken' => $resetToken]);
+        /*
+         * $email = (new TemplatedEmail())
             ->from(new Address('booking@madnesscrunch.de', 'WahlApp Self Service'))
             ->to($user->getEmail())
             ->subject('Your password reset request')
@@ -169,9 +171,11 @@ class ResetPasswordController extends AbstractController
             ->context([
                 'resetToken' => $resetToken,
             ])
+            $mailer->send($email);
         ;
+         */
 
-        $mailer->send($email);
+        mb_send_mail($user->getEmail(),'Your password reset request',$mailBody);
 
         // Store the token object in session for retrieval in check-email route.
         $this->setTokenObjectInSession($resetToken);
