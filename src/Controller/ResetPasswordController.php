@@ -162,7 +162,7 @@ class ResetPasswordController extends AbstractController
         }
 
         $email = (new TemplatedEmail())
-            ->from(new Address('no-reply@wahl.wagnerpictures.com', 'WahlApp Self Service'))
+            ->from(new Address('booking@madnesscrunch.de', 'WahlApp Self Service'))
             ->to($user->getEmail())
             ->subject('Your password reset request')
             ->htmlTemplate('reset_password/email.html.twig')
