@@ -11,8 +11,9 @@
 <body>
     {% for code in election.codes %}
         {% if not code.used %}
-            <div>
-                <img src="{{ url('app_create_sw_qr', {'id': election.uuid,'code':code}) }}" width="100" alt="QR-Code" style="width: 100px!important;height:100px!important;text-align: start!important;padding-left: 0!important;margin-left: 0!important;">
+            <img src="{{ url('app_create_sw_qr', {'id': election.uuid}) }}" width="100%" alt="QR-Code" style="">
+            <div class="avoid-break-inside" style="margin-bottom: 1.5rem; border-bottom: 1px solid black">
+                {# <img src="{{ url('app_create_sw_qr', {'id': election.uuid,'code':code}) }}" width="100" alt="QR-Code" style="width: 100px!important;height:100px!important;text-align: start!important;padding-left: 0!important;margin-left: 0!important;"> #}
                 <p><b>{{ election }}</b><br>
                     Sie haben {{ election.voices }} Wahlstimmen.<br>
                     Wahlcode: <b>{{ code }}</b>
