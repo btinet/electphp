@@ -17,6 +17,7 @@
             <table class="table table-hover mb-0" id="table">
                 <thead class="border-primary border-3 border-top-0 border-start-0 border-end-0">
                     <tr>
+                        <th class="text-nowrap">Eigentümer:in</th>
                         <th class="text-nowrap">Wahl</th>
                         <th class="text-nowrap text-center">aktiv</th>
                         <th class="text-nowrap">Wahlstimmen</th>
@@ -29,8 +30,16 @@
                 <tbody>
                 {% for election in elections %}
                     <tr>
-                        <td class="text-nowrap"><a href="{{ path('crud_election_show',{'id':election.id}) }}">{{ election.label }}</a></td>
-                        <td class="text-nowrap text-center">
+                        <td class="text-nowrap align-middle">
+                            {% if app.user == election.user %}
+                                <i class="bi bi-person-fill text-primary me-1"></i>
+                            {% else %}
+                                <i class="bi bi-person text-muted me-1"></i>
+                            {% endif %}
+                            {{ election.user ?? '<i class="text-danger">fehlt</i>'|raw }}
+                        </td>
+                        <td class="text-nowrap align-middle"><a href="{{ path('crud_election_show',{'id':election.id}) }}">{{ election.label }}</a></td>
+                        <td class="text-nowrap align-middle text-center">
                                 {% set like_icon = ' bi-toggle-off' %}
                             {% if election.isActive %}
                                 {% set like_icon = 'bi-toggle-on' %}
@@ -40,24 +49,24 @@
                                 <i class="like-icon-{{ election.id }} bi {{ like_icon }}" style="font-size: .9rem"></i>
                             </a>
                         </td>
-                        <td class="text-nowrap">{{ election.voices }}</td>
-                        <td class="text-nowrap">{{ election.people.count }}</td>
-                        <td class="text-nowrap">{{ election.codes.count }}</td>
+                        <td class="text-nowrap align-middle">{{ election.voices }}</td>
+                        <td class="text-nowrap align-middle">{{ election.people.count }}</td>
+                        <td class="text-nowrap align-middle">{{ election.codes.count }}</td>
                         {% set used_count = 0 %}
                         {% for code in election.codes %}
                             {% if code.used %}
                                 {% set used_count = used_count +1 %}
                             {% endif %}
                         {% endfor %}
-                        <td class="text-nowrap">{{ used_count }}</td>
-                        <td class="text-nowrap">
-                            <div class="d-flex justify-content-end">
-                                <a class="me-2" href="{{ path('crud_election_export_codes',{'id':election.id}) }}"><i class="text-dark bi bi-filetype-csv me-1"></i>Codes laden</a>
+                        <td class="text-nowrap align-middle">{{ used_count }}</td>
+                        <td class="text-nowrap align-middle">
+                            <div class="d-flex justify-content-end align-items-center">
                                 {% if used_count == 0 %}
-                                    <a class="" href="{{ path('crud_election_edit', {'id': election.id}) }}"><i class="text-dark bi bi-pencil me-1"></i>bearbeiten</a>
+                                    <a class="btn btn-sm btn-secondary me-1" href="{{ path('crud_election_edit', {'id': election.id}) }}">bearbeiten</a>
                                 {% else %}
-                                    <span class="text-muted"><i class="text-dark bi bi-pencil me-1"></i>bearbeiten</span>
+                                    <a class="btn btn-sm btn-secondary me-1 disabled" href="#">bearbeiten</a>
                                 {% endif %}
+                                {{ include('election/_delete_form_inline.html.twig') }}
                             </div>
 
                         </td>

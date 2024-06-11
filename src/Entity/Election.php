@@ -25,7 +25,7 @@ class Election
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255, unique: true)]
+    #[ORM\Column(length: 255, unique: false)]
     private ?string $label = null;
 
     #[ORM\Column(type: UuidType::NAME, unique: true)]
@@ -34,10 +34,10 @@ class Election
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\OneToMany(mappedBy: 'election', targetEntity: ElectionCode::class)]
+    #[ORM\OneToMany(mappedBy: 'election', targetEntity: ElectionCode::class, cascade: ['persist','remove'])]
     private Collection $codes;
 
-    #[ORM\OneToMany(mappedBy: 'election', targetEntity: Person::class)]
+    #[ORM\OneToMany(mappedBy: 'election', targetEntity: Person::class, cascade: ['persist','remove'])]
     private Collection $people;
 
     #[ORM\ManyToMany(targetEntity: ElectionResult::class, mappedBy: 'election')]
@@ -48,6 +48,9 @@ class Election
 
     #[ORM\Column(nullable: true)]
     private ?bool $isActive = null;
+
+    #[ORM\ManyToOne(inversedBy: 'elections')]
+    private ?User $user = null;
 
     public function __construct()
     {
@@ -215,6 +218,18 @@ class Election
     public function setIsActive(?bool $isActive): static
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

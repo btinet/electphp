@@ -2,9 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\ElectionResult;
 use App\Entity\Person;
+use App\Entity\User;
+use App\Form\PersonEditType;
 use App\Form\PersonType;
 use App\Repository\PersonRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,10 +19,17 @@ use Symfony\Component\Routing\Annotation\Route;
 class PersonController extends AbstractController
 {
     #[Route('/', name: 'index', methods: ['GET'])]
-    public function index(PersonRepository $personRepository): Response
+    public function index(PersonRepository $personRepository, UserRepository $userRepository): Response
     {
+        $people = [];
+        if($this->isGranted('ROLE_SUPER_ADMIN')) {
+            $people = $personRepository->findAll();
+        } elseif($this->isGranted('ROLE_ADMIN')) {
+            $user = $userRepository->find($this->getUser());
+            $people = $personRepository->findBy(['user' => $user]);
+        }
         return $this->render('person/index.html.twig', [
-            'people' => $personRepository->findAll(),
+            'people' => $people,
         ]);
     }
 
@@ -30,6 +41,7 @@ class PersonController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $person->setUser($entityManager->find(User::class,$this->getUser()));
             $entityManager->persist($person);
             $entityManager->flush();
             $this->addFlash('success',sprintf("%s wurde erfolgreich angelegt.",$person->getName()));
@@ -53,12 +65,21 @@ class PersonController extends AbstractController
     #[Route('/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Person $person, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(PersonType::class, $person);
+        $form = $this->createForm(PersonEditType::class, $person);
+        $electionData = $form->get('election')->getData();
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-            $this->addFlash('success',sprintf("%s wurde erfolgreich aktualisiert.",$person->getName()));
+                if($electionData != $person->getElection()) {
+                    foreach ($person->getElectionResults() as $result) {
+                        $entityManager->remove($result);
+                    }
+
+                    $this->addFlash('warning',sprintf("Die Wahl hat sich geändert. Wahlergebnisse werden für %s entfernt.",$person));
+                }
+                $entityManager->flush();
+                $this->addFlash('success',sprintf("%s wurde erfolgreich aktualisiert.", $person->getName()));
+
             return $this->redirectToRoute('admin_person_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -72,9 +93,16 @@ class PersonController extends AbstractController
     public function delete(Request $request, Person $person, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$person->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($person);
-            $entityManager->flush();
-            $this->addFlash('success',sprintf("%s wurde erfolgreich entfernt.",$person->getName()));
+            if($this->isGranted('ROLE_SUPER_ADMIN') || $person->getUser() === $this->getUser()) {
+                foreach ($person->getElectionResults() as $result) {
+                    $entityManager->remove($result);
+                }
+                $entityManager->remove($person);
+                $entityManager->flush();
+                $this->addFlash('success', sprintf("%s wurde erfolgreich entfernt.", $person->getName()));
+            } else {
+                $this->addFlash('warning',"Ihnen fehlt die notwendige Berechtigung");
+            }
         }
 
         return $this->redirectToRoute('admin_person_index', [], Response::HTTP_SEE_OTHER);

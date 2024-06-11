@@ -5,8 +5,11 @@ namespace App\Controller;
 use App\Entity\Election;
 use App\Entity\ElectionCode;
 use App\Entity\Person;
+use App\Entity\User;
+use App\Form\ElectionEditType;
 use App\Form\ElectionType;
 use App\Repository\ElectionRepository;
+use App\Repository\UserRepository;
 use chillerlan\QRCode\Data\QRMatrix;
 use chillerlan\QRCode\Output\QRGdImagePNG;
 use chillerlan\QRCode\Output\QRMarkupSVG;
@@ -33,10 +36,18 @@ use Throwable;
 class ElectionController extends AbstractController
 {
     #[Route('/', name: 'index', methods: ['GET'])]
-    public function index(ElectionRepository $electionRepository): Response
+    public function index(ElectionRepository $electionRepository, UserRepository $userRepository): Response
     {
+        $elections = [];
+        if($this->isGranted('ROLE_SUPER_ADMIN')) {
+            $elections = $electionRepository->findAll();
+        } elseif($this->isGranted('ROLE_ADMIN')) {
+            $user = $userRepository->find($this->getUser());
+            $elections = $electionRepository->findBy(['user' => $user]);
+        }
+
         return $this->render('election/index.html.twig', [
-            'elections' => $electionRepository->findAll(),
+            'elections' => $elections,
         ]);
     }
 
@@ -50,6 +61,8 @@ class ElectionController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $codeAmount = intval($form->get('code-amount')->getData());
+            $user = $entityManager->find(User::class,$this->getUser());
+            $election->setUser($user);
             $entityManager->persist($election);
             if($codeAmount <= 0 || !is_int($codeAmount)) {
                 $codeAmount = 100;
@@ -115,8 +128,7 @@ class ElectionController extends AbstractController
                 return $this->redirectToRoute('crud_election_index', [], Response::HTTP_SEE_OTHER);
             }
         }
-
-        $form = $this->createForm(ElectionType::class, $election);
+        $form = $this->createForm(ElectionEditType::class, $election);
         $form->get('code-amount')->setData($election->getCodes()->count());
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

@@ -12,7 +12,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class ElectionType extends AbstractType
+class ElectionEditType extends AbstractType
 {
     private UserInterface $user;
 
@@ -24,11 +24,6 @@ class ElectionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('user',TextType::class,[
-                'attr' => ['readonly' => 'readonly','disabled' => 'disabled'],
-                'data' => $this->user,
-                'data_class' => User::class
-            ])
             ->add('label')
             ->add('voices',NumberType::class,[
                 'required' => true

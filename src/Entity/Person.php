@@ -21,8 +21,11 @@ class Person
     #[ORM\ManyToOne(inversedBy: 'people')]
     private ?Election $election = null;
 
-    #[ORM\ManyToMany(targetEntity: ElectionResult::class, mappedBy: 'person')]
+    #[ORM\ManyToMany(targetEntity: ElectionResult::class, mappedBy: 'person', cascade: ['persist','remove'],orphanRemoval: true)]
     private Collection $electionResults;
+
+    #[ORM\ManyToOne(inversedBy: 'people')]
+    private ?User $user = null;
 
     public function __construct()
     {
@@ -91,6 +94,18 @@ class Person
         if ($this->electionResults->removeElement($electionResult)) {
             $electionResult->removePerson($this);
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

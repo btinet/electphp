@@ -17,7 +17,8 @@
             <table class="table table-hover mb-0" id="table">
                 <thead class="border-primary border-3 border-top-0 border-start-0 border-end-0">
                 <tr>
-                    <th class="text-nowrap">Name</th>
+                    <th class="text-nowrap">Eigentümer:in</th>
+                    <th class="text-nowrap">Kandidat:in</th>
                     <th class="text-nowrap">Wahlrunde</th>
                     <th class="text-end text-nowrap">Aktionen</th>
                 </tr>
@@ -25,10 +26,23 @@
                 <tbody>
                 {% for person in people|sort((a, b) => a.name <=> b.name) %}
                     <tr>
-                        <td class="text-nowrap">{{ person.name }}</td>
-                        <td class="text-nowrap"><a href="{{ path('crud_election_show',{'id':person.election.id}) }}">{{ person.election.label }}</a></td>
-                        <td class="text-end text-nowrap">
-                            <a href="{{ path('admin_person_edit', {'id': person.id}) }}"><i class="text-dark bi bi-pencil me-1"></i>bearbeiten</a>
+                        <td class="text-nowrap align-middle">
+                            {% if app.user == person.user %}
+                                <i class="bi bi-person-fill text-primary me-1"></i>
+                            {% else %}
+                                <i class="bi bi-person text-muted me-1"></i>
+                            {% endif %}
+                            {{ person.user ?? '<i class="text-danger">fehlt</i>'|raw }}
+                        </td>
+                        <td class="text-nowrap align-middle">{{ person.name }}</td>
+                        <td class="text-nowrap align-middle">
+                            {% if person.election %}
+                                <a href="{{ path('crud_election_show',{'id':person.election.id}) }}">{{ person.election.label }}</a>
+                                {% else %}
+                            {% endif %}
+                        </td>
+                        <td class="text-end text-nowrap align-middle">
+                            <a class="btn btn-sm btn-secondary me-1" href="{{ path('admin_person_edit', {'id': person.id}) }}">bearbeiten</a>
                         </td>
                     </tr>
                 {% endfor %}

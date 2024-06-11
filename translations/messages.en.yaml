@@ -3,3 +3,7 @@ Name: Kandidat:in
 Label: Bezeichnung
 Voices: Stimmen
 Code-amount: Anzahl der Wahlcodes
+User: Eigentümer:in
+ROLE_SUPER_ADMIN: Superadministrator
+ROLE_ADMIN: Administrator
+ROLE_USER: Benutzer
