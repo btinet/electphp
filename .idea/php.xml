@@ -140,6 +140,7 @@
       <path value="$PROJECT_DIR$/vendor/chillerlan/php-qrcode" />
       <path value="$PROJECT_DIR$/vendor/pontedilana/weasyprint-bundle" />
       <path value="$PROJECT_DIR$/vendor/pontedilana/php-weasyprint" />
+      <path value="$PROJECT_DIR$/vendor/symfonycasts/reset-password-bundle" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.1" />

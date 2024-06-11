@@ -7,3 +7,10 @@ User: Eigentümer:in
 ROLE_SUPER_ADMIN: Superadministrator
 ROLE_ADMIN: Administrator
 ROLE_USER: Benutzer
+Username: Kennung
+Roles: Rollen
+Password: Passwort
+Repeat Password: Passwort wiederholen
+Firstname: Vorname
+Lastname: Nachname
+Email: E-Mail-Adresse

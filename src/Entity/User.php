@@ -29,10 +29,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Election::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Election::class, cascade: ['persist','remove'], orphanRemoval: true)]
     private Collection $elections;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Person::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Person::class, cascade: ['persist','remove'], orphanRemoval: true)]
     private Collection $people;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -40,6 +40,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $lastname = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $email = null;
 
     public function __construct()
     {
@@ -202,6 +205,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLastname(?string $lastname): static
     {
         $this->lastname = $lastname;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(?string $email): static
+    {
+        $this->email = $email;
 
         return $this;
     }

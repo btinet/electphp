@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User index{% endblock %}
+
+{% block body %}
+<div class="container pb-5">
+    <div class="card  rounded-3">
+        <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="fw-bold">Benutzerkonten</div>
+                <div class="d-flex">
+                    <a class="btn btn-sm btn-secondary" href="{{ path('admin_user_new') }}">Konto anlegen</a>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive bg-light-subtle py-2">
+            <table class="table table-hover mb-0" id="table">
+                <thead class="border-danger border-3 border-top-0 border-start-0 border-end-0">
+                    <tr>
+                        <th class="text-nowrap">Kennung</th>
+                        <th class="text-nowrap">Rollen</th>
+                        <th class="text-nowrap">Vorname</th>
+                        <th class="text-nowrap">Nachname</th>
+                        <th class="text-nowrap">E-Mail-Adresse</th>
+                        <th class="text-nowrap text-end">Aktionen</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for user in users %}
+                    <tr>
+
+                        <td class="text-nowrap align-middle">{{ user.username }}</td>
+                        <td class="text-nowrap align-middle">
+                            {% for role in user.roles|sort %}
+                                <div class="badge badge-danger">
+                                    {{ role|trans }}
+                                </div>
+                            {% endfor %}
+                        </td>
+                        <td class="text-nowrap align-middle">{{ user.firstname }}</td>
+                        <td class="text-nowrap align-middle">{{ user.lastname }}</td>
+                        <td class="text-nowrap align-middle">{{ user.email ?? 'keine' }}</td>
+                        <td class="text-nowrap text-end align-middle">
+                            <a class="btn btn-sm btn-secondary" href="{{ path('admin_user_edit', {'id': user.id}) }}">bearbeiten</a>
+                            <a class="btn btn-sm btn-secondary" href="{{ path('admin_user_edit_password', {'id': user.id}) }}">neues Passwort</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+        <div class="card-footer">
+            <span class="text-muted small">Übersicht aller Benutzerkonten</span>
+        </div>
+    </div>
+    <div class="card mt-5">
+        <div class="card-body">
+            <p class="card-text">
+                Hinweise zu den Berechtigungen der jeweiligen Rollen:
+            </p>
+        </div>
+        <div class="list-group list-group-flush">
+            <div class="list-group-item">
+                <div class="row">
+                    <div class="col-12 col-md-3">{{ 'ROLE_USER'|trans }}</div>
+                    <div class="col-12 col-md-9 text-muted">Login möglich, weitere Funktion implementierbar</div>
+                </div>
+            </div>
+            <div class="list-group-item">
+                <div class="row">
+                    <div class="col-12 col-md-3">{{ 'ROLE_ADMIN'|trans }}</div>
+                    <div class="col-12 col-md-9 text-muted">{{ 'ROLE_USER'|trans }}rechte + Verwaltung eigener Wahlrunden und Kandidat:innen</div>
+                </div>
+            </div>
+            <div class="list-group-item">
+                <div class="row">
+                    <div class="col-12 col-md-3">{{ 'ROLE_SUPER_ADMIN'|trans }}</div>
+                    <div class="col-12 col-md-9 text-muted">{{ 'ROLE_ADMIN'|trans }}rechte + Verwaltung aller Wahlrunden und Kandidat:innen, Benutzerverwaltung</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

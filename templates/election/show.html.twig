@@ -25,9 +25,9 @@
         </div>
         <div class="table-responsive bg-light-subtle py-2">
             <table class="table table-hover mb-0" id="table">
-                <thead class="border-primary border-3 border-top-0 border-start-0 border-end-0">
+                <thead class="border-warning border-3 border-top-0 border-start-0 border-end-0">
                 <tr>
-                    <th class="text-nowrap">Name</th>
+                    <th class="text-nowrap">Kandidat:in</th>
                     <th class="text-nowrap">Stimmen</th>
                     <th class="text-nowrap">Stimmenanteile</th>
                     <th class="text-end text-nowrap">Aktionen</th>
@@ -89,7 +89,7 @@
                     </a>
                 </div>
                 {% if used_count == 0 %}
-                    <a class="btn btn-primary" href="{{ path('crud_election_edit', {'id': election.id}) }}">Wahlrunde bearbeiten</a>
+                    <a class="btn btn-sm btn-secondary" href="{{ path('crud_election_edit', {'id': election.id}) }}">Wahlrunde bearbeiten</a>
                 {% else %}
                     <span class="text-danger small">Nach Wahlbeginn sind weitere Änderungen nicht mehr möglich.</span>
                 {% endif %}
