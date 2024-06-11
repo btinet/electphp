@@ -9,7 +9,11 @@
     <link rel="stylesheet" href="https://unpkg.com/gutenberg-css@0.7/dist/themes/oldstyle.min.css" media="print">
 </head>
 <body>
-<img src="{{ url('app_create_sw_qr', {'id': election.uuid}) }}" width="100%" alt="QR-Code" style="">
+<div class="break-after">
+    <h5>{{ election }}</h5>
+    <img src="{{ url('app_create_sw_qr', {'id': election.uuid}) }}" width="100%" alt="QR-Code" style="">
+</div>
+
     {% for code in election.codes %}
         {% if not code.used %}
 
