@@ -9,10 +9,8 @@
     <link rel="stylesheet" href="https://unpkg.com/gutenberg-css@0.7/dist/themes/oldstyle.min.css" media="print">
 </head>
 <body>
-    {% set i = 0 %}
     {% for code in election.codes %}
         {% if not code.used %}
-            {% set i = i + 1  %}
             <div>
                 <p><b>{{ election }}</b><br>
                     Sie haben {{ election.voices }} Wahlstimmen.<br>
