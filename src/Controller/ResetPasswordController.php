@@ -175,7 +175,7 @@ class ResetPasswordController extends AbstractController
         ;
          */
 
-        mb_send_mail($user->getEmail(),'Your password reset request',$mailBody);
+        mail($user->getEmail(),'Your password reset request',$mailBody);
 
         // Store the token object in session for retrieval in check-email route.
         $this->setTokenObjectInSession($resetToken);
