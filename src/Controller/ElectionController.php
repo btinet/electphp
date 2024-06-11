@@ -306,12 +306,12 @@ class ElectionController extends AbstractController
     }
 
     #[Route('/export/{id}/pdf', name: 'export_qr_pdf', methods: ['GET'])]
-    public function exportElectionCodes(int $id, Pdf $pdf): PdfResponse
+    public function exportElectionCodes(Election $election, Pdf $pdf): PdfResponse
     {
 
-        $url = $this->generateUrl('app_export_qr_html',['id' => $id],UrlGeneratorInterface::ABSOLUTE_URL);
+        $url = $this->renderView('election/export_codes.html.twig',['election' => $election]);
 
-        $pdfContent = $pdf->getOutput($url);
+        $pdfContent = $pdf->getOutputFromHtml($url);
 
         return new PdfResponse(
             content: $pdfContent,
