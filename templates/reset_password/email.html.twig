@@ -4,6 +4,8 @@
 
 <a href="{{ url('app_reset_password', {token: resetToken.token}) }}">{{ url('app_reset_password', {token: resetToken.token}) }}</a>
 
+<p>Ihre Kennung lautet: {{ user.username ?? '' }}</p>
+
 <p>Dieser Link verliert seine Gültigkeit in {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.</p>
 
 <p>Mit besten Grüßen<br>Ihr WahlApp Self Service</p>
