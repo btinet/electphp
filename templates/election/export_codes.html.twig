@@ -10,11 +10,12 @@
 </head>
 <body>
     {% set i = 0 %}
+    {% set qr = url('app_create_sw_qr', {'id': election.uuid}) %}
     {% for code in election.codes %}
         {% if not code.used %}
             {% set i = i + 1  %}
             <h4>{{ election }}</h4>
-            <img src="{{ url('app_create_sw_qr', {'id': election.uuid,'code':code}) }}" width="100" alt="QR-Code" style="width: 100px!important;height:100px!important;text-align: start!important;padding-left: 0!important;margin-left: 0!important;">
+            <img src="{{ qr }}" width="100" alt="QR-Code" style="width: 100px!important;height:100px!important;text-align: start!important;padding-left: 0!important;margin-left: 0!important;">
             <p>
                 Sie haben {{ election.voices }} Wahlstimmen.<br>
                 Wahlcode: <b>{{ code }}</b>
