@@ -32,7 +32,7 @@ let tableOptions = {
 
 
 let table = new DataTable('#table', {
-    responsive: true,
+    responsive: false,
     "language": tableOptions
 });
 
