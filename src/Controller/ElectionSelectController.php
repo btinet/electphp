@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Election;
 use App\Entity\ElectionCode;
 use App\Entity\ElectionResult;
+use App\Entity\Option;
 use App\Entity\Person;
 use App\Repository\ElectionRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -59,7 +60,7 @@ class ElectionSelectController extends AbstractController
 
                 if($request->request->get('invalidate')=='invalidate') {
                     $this->addFlash('success','Die Wahl wurde ungültig gemacht!');
-                } else {
+                } elseif(!$election->isVote()) {
                     foreach ($request->request->all('election') as $key => $value) {
                         $electionResult = new ElectionResult();
                         $electionResult->addElection($election);
@@ -68,6 +69,15 @@ class ElectionSelectController extends AbstractController
                         $entityManager->persist($electionResult);
                         $entityManager->flush();
                     }
+                    $this->addFlash('success','Die Wahl war erfolgreich!');
+                } else {
+                    $value = $request->request->get('election');
+                    $electionResult = new ElectionResult();
+                    $electionResult->addElection($election);
+                    $option = $entityManager->getRepository(Option::class)->find($value);
+                    $electionResult->addOption($option);
+                    $entityManager->persist($electionResult);
+                    $entityManager->flush();
                     $this->addFlash('success','Die Wahl war erfolgreich!');
                 }
                 return $this->redirectToRoute('app_index');

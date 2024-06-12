@@ -21,10 +21,14 @@ class ElectionResult
     #[ORM\ManyToMany(targetEntity: Person::class, inversedBy: 'electionResults')]
     private Collection $person;
 
+    #[ORM\ManyToMany(targetEntity: Option::class, mappedBy: 'electionResults')]
+    private Collection $options;
+
     public function __construct()
     {
         $this->election = new ArrayCollection();
         $this->person = new ArrayCollection();
+        $this->options = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -76,6 +80,33 @@ class ElectionResult
     public function removePerson(Person $person): static
     {
         $this->person->removeElement($person);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Option>
+     */
+    public function getOptions(): Collection
+    {
+        return $this->options;
+    }
+
+    public function addOption(Option $option): static
+    {
+        if (!$this->options->contains($option)) {
+            $this->options->add($option);
+            $option->addElectionResult($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOption(Option $option): static
+    {
+        if ($this->options->removeElement($option)) {
+            $option->removeElectionResult($this);
+        }
 
         return $this;
     }

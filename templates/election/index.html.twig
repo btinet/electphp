@@ -17,9 +17,9 @@
             <table class="table table-hover mb-0" id="table">
                 <thead class="border-warning border-3 border-top-0 border-start-0 border-end-0">
                     <tr>
-                        <th class="text-nowrap">Eigentümer:in</th>
-                        <th class="text-nowrap">Wahl</th>
                         <th class="text-nowrap text-center">aktiv</th>
+                        <th class="text-nowrap">Wahl</th>
+                        <th class="text-nowrap">Eigentümer:in</th>
                         <th class="text-nowrap">Wahlstimmen</th>
                         <th class="text-nowrap">Kandidat:innen</th>
                         <th class="text-nowrap">Wahlcodes</th>
@@ -30,17 +30,8 @@
                 <tbody>
                 {% for election in elections %}
                     <tr>
-                        <td class="text-nowrap align-middle">
-                            {% if app.user == election.user %}
-                                <i class="bi bi-person-fill text-warning me-1"></i>
-                            {% else %}
-                                <i class="bi bi-person text-muted me-1"></i>
-                            {% endif %}
-                            {{ election.user ?? '<i class="text-danger">fehlt</i>'|raw }}
-                        </td>
-                        <td class="text-nowrap align-middle"><a class="link-warning" href="{{ path('crud_election_show',{'id':election.id}) }}">{{ election.label }}</a></td>
                         <td class="text-nowrap align-middle text-center">
-                                {% set like_icon = ' bi-toggle-off' %}
+                            {% set like_icon = ' bi-toggle-off' %}
                             {% if election.isActive %}
                                 {% set like_icon = 'bi-toggle-on' %}
                             {% endif %}
@@ -48,6 +39,15 @@
                             <a class="toggle-election p-1" href="{{ url('crud_election_switch',{'id':election.id}) }}"  data-value="{{ election.id }}">
                                 <i class="like-icon-{{ election.id }} bi {{ like_icon }}" style="font-size: .9rem"></i>
                             </a>
+                        </td>
+                        <td class="text-nowrap align-middle"><a class="link-warning" href="{{ path('crud_election_show',{'id':election.id}) }}">{{ election.label }}</a></td>
+                        <td class="text-nowrap align-middle">
+                            {% if app.user == election.user %}
+                                <i class="bi bi-person-fill text-warning me-1"></i>
+                            {% else %}
+                                <i class="bi bi-person text-muted me-1"></i>
+                            {% endif %}
+                            {{ election.user ?? '<i class="text-danger">fehlt</i>'|raw }}
                         </td>
                         <td class="text-nowrap align-middle">{{ election.voices }}</td>
                         <td class="text-nowrap align-middle">{{ election.people.count }}</td>

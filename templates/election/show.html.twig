@@ -23,35 +23,63 @@
                 </div>
             </div>
         </div>
+        {% if election.vote %}
+            <div class="card-body">
+                <p class="card-text">{{ election.description ?? 'Keine Abstimmungsfrage eingetragen.' }}</p>
+            </div>
+        {% endif %}
+
         <div class="table-responsive bg-light-subtle py-2">
             <table class="table table-hover mb-0" id="table">
                 <thead class="border-warning border-3 border-top-0 border-start-0 border-end-0">
                 <tr>
-                    <th class="text-nowrap">Kandidat:in</th>
-                    <th class="text-nowrap">Stimmen</th>
-                    <th class="text-nowrap">Stimmenanteile</th>
-                    <th class="text-end text-nowrap">Aktionen</th>
+                    {% if not election.vote %}
+                        <th class="text-nowrap">Kandidat:in</th>
+                        <th class="text-nowrap">Stimmen</th>
+                        <th class="text-nowrap">Stimmenanteile</th>
+                        <th class="text-end text-nowrap">Aktionen</th>
+                    {% else %}
+                        <th class="text-nowrap">Antwort</th>
+                        <th class="text-nowrap">Stimmen</th>
+                        <th class="text-nowrap">Stimmenanteile</th>
+                    {% endif %}
                 </tr>
                 </thead>
                 <tbody>
-                {% for person in election.people|sort((a, b) => a.name <=> b.name) %}
-                    <tr>
-                        <td class="text-nowrap align-middle"><i class="bi bi-square-fill me-2" style="color: {{ colors[loop.index0] }}"></i>{{ person.name }}</td>
-                        {% if election.electionResults.count == 0 %}
-                            {% set electionresult = 0 %}
+                {% if not election.vote %}
+                    {% for person in election.people|sort((a, b) => a.name <=> b.name) %}
+                        <tr>
+                            <td class="text-nowrap align-middle"><i class="bi bi-square-fill me-2" style="color: {{ colors[loop.index0] }}"></i>{{ person.name }}</td>
+                            {% if election.electionResults.count == 0 %}
+                                {% set electionresult = 0 %}
+                                {% else %}
+                                    {% set electionresult = (person.electionresults.count / election.electionResults.count * 100)|round(2) %}
+                            {% endif %}
+                            <td class="text-nowra align-middlep">{{ person.electionresults.count }}</td>
+                            <td class="text-nowrap align-middle">{{ electionresult }}%</td>
+                            <td class="text-end text-nowrap align-middle">
+                                <a class="btn btn-sm btn-secondary me-1" href="{{ path('admin_person_edit', {'id': person.id}) }}">bearbeiten</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    {% for option in election.options %}
+                        <tr>
+                            <td class="text-nowrap align-middle"><i class="bi bi-square-fill me-2" style="color: {{ colors[loop.index0] }}"></i>{{ option }}</td>
+                            {% if election.electionResults.count == 0 %}
+                                {% set electionresult = 0 %}
                             {% else %}
-                                {% set electionresult = (person.electionresults.count / election.electionResults.count * 100)|round(2) %}
-                        {% endif %}
-                        <td class="text-nowra align-middlep">{{ person.electionresults.count }}</td>
-                        <td class="text-nowrap align-middle">{{ electionresult }}%</td>
-                        <td class="text-end text-nowrap align-middle">
-                            <a class="btn btn-sm btn-secondary me-1" href="{{ path('admin_person_edit', {'id': person.id}) }}">bearbeiten</a>
-                        </td>
-                    </tr>
-                {% endfor %}
+                                {% set electionresult = (option.electionresults.count / election.electionResults.count * 100)|round(2) %}
+                            {% endif %}
+                            <td class="text-nowra align-middlep">{{ option.electionresults.count }}</td>
+                            <td class="text-nowrap align-middle">{{ electionresult }}%</td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
                 </tbody>
             </table>
         </div>
+
         <div class="card-body bg-light-subtle">
             <div class="row row-cols-1 g-3">
                 <div class="col">
@@ -133,6 +161,9 @@
                         <div class="d-flex">
                         </div>
                         <div class="h5">Wahlergebnis der {{ election }}-Wahl</div>
+                        {% if election.vote %}
+                            <p class="card-text">{{ election.description ?? 'Keine Abstimmungsfrage eingetragen.' }}</p>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="card-body bg-light-subtle">
@@ -143,96 +174,188 @@
     </div>
 
 </div>
+    {% if not election.vote %}
+        <script>
+            {% set generic = 0 %}
+            {% set genericCount = 0 %}
+            const ctx{{ election.id }} = document.getElementById('result-chart');
 
-    <script>
-        {% set generic = 0 %}
-        {% set genericCount = 0 %}
-        const ctx{{ election.id }} = document.getElementById('result-chart');
-
-        const labels{{ election.id }} = '';
-        const data{{ election.id }} = {
-            labels: labels{{ election.id }},
-            datasets: [{
-                label: 'Stimmen',
-                data: {
-                    {% for person in election.people|sort((a, b) => a.name <=> b.name)  %}
-                    {% if person.electionResults.count < 10  and election.id == 30 %}
-                    {% if person.electionResults.count > 0  %}
-                    {% set generic = generic + 1 %}
-                    {% set genericCount = genericCount + person.electionResults.count %}
-                    {% endif %}
-                    {% else %}
-                    '{{  person.name }}':{{  person.electionResults.count }},
-                    {% endif %}
-                    {% endfor %}
-                    {% if generic > 0  %}
-                    'Sonstige': {{ genericCount }}
-                    {% endif %}
-                },
-                backgroundColor: [
-                    '#fff100',
-                    '#ff8c00',
-                    '#e81123',
-                    '#ec008c',
-                    '#68217a',
-                    '#00188f',
-                    '#00bcf2',
-                    '#00b294',
-                    '#009e49',
-                    '#bad80a',
-                    '#fff100',
-                    '#ff8c00',
-                    '#e81123',
-                    '#ec008c',
-                    '#68217a',
-                    '#00188f',
-                    '#00bcf2',
-                    '#00b294',
-                    '#009e49',
-                    '#bad80a',
-                ],
-                borderWidth: 0,
-            }]
-        };
-
-        new Chart(ctx{{ election.id }}, {
-            type: 'bar',
-            data: data{{ election.id }},
-            options: {
-                responsive: true,
-                legend: {
-                    position: 'bottom',
-                },
-                hover: {
-                    mode: 'label'
-                },
-                scales: {
-                    y: {
-                        suggestedMin: 0,
-                        ticks: {
-                            // Include a dollar sign in the ticks
-                            callback: function (value, index, ticks) {
-                                return value;
-                            },
-                            stepSize: 1
-                        },
-                        grid: {
-                            display: true
-                        }
-                    }
-                },
-                plugins: {
-                    title: {
-                        display: false,
-                        text: 'Wahlergebnis'
+            const labels{{ election.id }} = '';
+            const data{{ election.id }} = {
+                labels: labels{{ election.id }},
+                datasets: [{
+                    label: 'Stimmen',
+                    data: {
+                        {% for person in election.people|sort((a, b) => a.name <=> b.name)  %}
+                        {% if person.electionResults.count < 10  and election.id == 30 %}
+                        {% if person.electionResults.count > 0  %}
+                        {% set generic = generic + 1 %}
+                        {% set genericCount = genericCount + person.electionResults.count %}
+                        {% endif %}
+                        {% else %}
+                        '{{  person.name }}':{{  person.electionResults.count }},
+                        {% endif %}
+                        {% endfor %}
+                        {% if generic > 0  %}
+                        'Sonstige': {{ genericCount }}
+                        {% endif %}
                     },
+                    backgroundColor: [
+                        '#fff100',
+                        '#ff8c00',
+                        '#e81123',
+                        '#ec008c',
+                        '#68217a',
+                        '#00188f',
+                        '#00bcf2',
+                        '#00b294',
+                        '#009e49',
+                        '#bad80a',
+                        '#fff100',
+                        '#ff8c00',
+                        '#e81123',
+                        '#ec008c',
+                        '#68217a',
+                        '#00188f',
+                        '#00bcf2',
+                        '#00b294',
+                        '#009e49',
+                        '#bad80a',
+                    ],
+                    borderWidth: 0,
+                }]
+            };
+
+            new Chart(ctx{{ election.id }}, {
+                type: 'bar',
+                data: data{{ election.id }},
+                options: {
+                    responsive: true,
                     legend: {
-                        display: false
+                        position: 'bottom',
                     },
+                    hover: {
+                        mode: 'label'
+                    },
+                    scales: {
+                        y: {
+                            suggestedMin: 0,
+                            ticks: {
+                                // Include a dollar sign in the ticks
+                                callback: function (value, index, ticks) {
+                                    return value;
+                                },
+                                stepSize: 1
+                            },
+                            grid: {
+                                display: true
+                            }
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: false,
+                            text: 'Wahlergebnis'
+                        },
+                        legend: {
+                            display: false
+                        },
+                    }
                 }
-            }
-        });
-    </script>
+            });
+        </script>
+    {% else %}
+        <script>
+            {% set generic = 0 %}
+            {% set genericCount = 0 %}
+            const ctx{{ election.id }} = document.getElementById('result-chart');
+
+            const labels{{ election.id }} = '';
+            const data{{ election.id }} = {
+                labels: labels{{ election.id }},
+                datasets: [{
+                    label: 'Stimmen',
+                    data: {
+                        {% for option in election.options|sort((a, b) => a.label <=> b.label)  %}
+                        {% if option.electionResults.count < 10  and election.id == 30 %}
+                        {% if option.electionResults.count > 0  %}
+                        {% set generic = generic + 1 %}
+                        {% set genericCount = genericCount + option.electionResults.count %}
+                        {% endif %}
+                        {% else %}
+                        '{{  option.label }}':{{  option.electionResults.count }},
+                        {% endif %}
+                        {% endfor %}
+                        {% if generic > 0  %}
+                        'Sonstige': {{ genericCount }}
+                        {% endif %}
+                    },
+                    backgroundColor: [
+                        '#fff100',
+                        '#ff8c00',
+                        '#e81123',
+                        '#ec008c',
+                        '#68217a',
+                        '#00188f',
+                        '#00bcf2',
+                        '#00b294',
+                        '#009e49',
+                        '#bad80a',
+                        '#fff100',
+                        '#ff8c00',
+                        '#e81123',
+                        '#ec008c',
+                        '#68217a',
+                        '#00188f',
+                        '#00bcf2',
+                        '#00b294',
+                        '#009e49',
+                        '#bad80a',
+                    ],
+                    borderWidth: 0,
+                }]
+            };
+
+            new Chart(ctx{{ election.id }}, {
+                type: 'bar',
+                data: data{{ election.id }},
+                options: {
+                    responsive: true,
+                    legend: {
+                        position: 'bottom',
+                    },
+                    hover: {
+                        mode: 'label'
+                    },
+                    scales: {
+                        y: {
+                            suggestedMin: 0,
+                            ticks: {
+                                // Include a dollar sign in the ticks
+                                callback: function (value, index, ticks) {
+                                    return value;
+                                },
+                                stepSize: 1
+                            },
+                            grid: {
+                                display: true
+                            }
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: false,
+                            text: 'Wahlergebnis'
+                        },
+                        legend: {
+                            display: false
+                        },
+                    }
+                }
+            });
+        </script>
+    {% endif %}
+
 
 
 

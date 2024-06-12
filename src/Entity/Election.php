@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ElectionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UlidType;
@@ -52,11 +53,18 @@ class Election
     #[ORM\ManyToOne(inversedBy: 'elections')]
     private ?User $user = null;
 
+    #[ORM\Column(nullable: false)]
+    private bool $vote = false;
+
+    #[ORM\ManyToMany(targetEntity: Option::class, inversedBy: 'elections')]
+    private Collection $options;
+
     public function __construct()
     {
         $this->codes = new ArrayCollection();
         $this->people = new ArrayCollection();
         $this->electionResults = new ArrayCollection();
+        $this->options = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -233,4 +241,41 @@ class Election
 
         return $this;
     }
+
+    public function isVote(): bool
+    {
+        return $this->vote;
+    }
+
+    public function setVote(bool $vote): static
+    {
+        $this->vote = $vote;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Option>
+     */
+    public function getOptions(): Collection
+    {
+        return $this->options;
+    }
+
+    public function addOption(Option $option): static
+    {
+        if (!$this->options->contains($option)) {
+            $this->options->add($option);
+        }
+
+        return $this;
+    }
+
+    public function removeOption(Option $option): static
+    {
+        $this->options->removeElement($option);
+
+        return $this;
+    }
+
 }

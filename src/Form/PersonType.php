@@ -28,7 +28,7 @@ class PersonType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $choices = $this->electionRepository->findBy(['user' => $this->user]);
+        $choices = $this->electionRepository->findBy(['user' => $this->user,'vote' => false]);
 
         $builder
             ->add('user',TextType::class,[

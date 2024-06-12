@@ -129,10 +129,19 @@ class ElectionController extends AbstractController
             }
         }
         $form = $this->createForm(ElectionEditType::class, $election);
+        $isVote = boolval($form->get('vote')->getData());
         $form->get('code-amount')->setData($election->getCodes()->count());
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $codeAmount = intval($form->get('code-amount')->getData());
+            if($isVote != $election->isVote()) {
+                if(!$isVote) {
+                    foreach ($election->getPeople() as $person) {
+                        $election->removePerson($person);
+                    }
+                    $this->addFlash('warning',"Wahltyp auf Abstimmung geändert. Alle Kandidat:innen wurden entfernt.");
+                }
+            }
             if($codeAmount > 0 && $codeAmount != $election->getCodes()->count()) {
                 foreach ($election->getCodes() as $code) {
                     $election->removeCode($code);

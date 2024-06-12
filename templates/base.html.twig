@@ -48,10 +48,18 @@
             </div>
         </nav>
 
+        {% for notice in app.flashes('danger') %}
+            <div class="alert alert-danger d-flex align-items-center" role="alert">
+                <div class="container">
+                    <i class="bi bi-exclamation-diamond-fill me-2"></i> {{ notice }}
+                </div>
+            </div>
+        {% endfor %}
+
         {% for notice in app.flashes('warning') %}
             <div class="alert alert-warning d-flex align-items-center" role="alert">
                 <div class="container">
-                    <i class="bi bi-info-circle-fill me-2"></i> {{ notice }}
+                    <i class="bi bi-info-square-fill me-2"></i> {{ notice }}
                 </div>
             </div>
         {% endfor %}
@@ -59,7 +67,7 @@
         {% for notice in app.flashes('success') %}
             <div class="alert alert-success d-flex align-items-center" role="alert">
                 <div class="container">
-                    <i class="bi bi-info-circle-fill me-2"></i> {{ notice }}
+                    <i class="bi bi-check-square-fill me-2"></i> {{ notice }}
                 </div>
             </div>
         {% endfor %}

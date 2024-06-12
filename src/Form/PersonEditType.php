@@ -24,7 +24,7 @@ class PersonEditType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $person = $builder->getData();
-        $elections = $this->electionRepository->findBy(['user' => $person->getUser()]);
+        $elections = $this->electionRepository->findBy(['user' => $person->getUser(),'vote' => false]);
 
         $builder
             ->add('user',TextType::class,[

@@ -26,17 +26,30 @@
                                 Bitte den Wahlcode für die Wahl "{{ election.label }}" eingeben.
                             </div>
                         </div>
-                        {% for i in 1..election.voices %}
+                        {% if election.vote %}
                             <div class="col">
-                                <label for="election_{{ i }}" class="form-label">{{ i }}. Stimme</label>
-                                <select class="form-select" id="election_{{ i }}" name="election[]" required>
-                                    <option value="" selected disabled>Person wählen</option>
-                                    {% for person in election.people|sort((a, b) => a.name <=> b.name) %}
-                                        <option value="{{ person.id }}">{{ person }}</option>
+                                <div class="lead">{{ election.description }}</div>
+                                <label for="election" class="form-label">Antwort</label>
+                                <select class="form-select" id="election" name="election" required>
+                                    <option value="" selected disabled>Antwort wählen</option>
+                                    {% for option in election.options|sort((a, b) => a.label <=> b.label) %}
+                                        <option value="{{ option.id }}">{{ option }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
-                        {% endfor %}
+                        {% else %}
+                            {% for i in 1..election.voices %}
+                                <div class="col">
+                                    <label for="election_{{ i }}" class="form-label">{{ i }}. Stimme</label>
+                                    <select class="form-select" id="election_{{ i }}" name="election[]" required>
+                                        <option value="" selected disabled>Person wählen</option>
+                                        {% for person in election.people|sort((a, b) => a.name <=> b.name) %}
+                                            <option value="{{ person.id }}">{{ person }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
                         <div class="col d-flex justify-content-between mb-5">
                             <button type="submit" class="btn btn-lg btn-primary w-100">Abstimmen</button>
                         </div>
