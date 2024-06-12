@@ -40,7 +40,14 @@
                                 <i class="like-icon-{{ election.id }} bi {{ like_icon }}" style="font-size: .9rem"></i>
                             </a>
                         </td>
-                        <td class="text-nowrap align-middle"><a class="link-warning" href="{{ path('crud_election_show',{'id':election.id}) }}">{{ election.label }}</a></td>
+                        <td class="text-nowrap align-middle">
+                            {% if election.vote %}
+                                <i class="bi bi-check-square-fill me-1"></i>
+                            {% else %}
+                                <i class="bi bi-person-square me-1"></i>
+                            {% endif %}
+                            <a class="link-warning" href="{{ path('crud_election_show',{'id':election.id}) }}">{{ election.label }}</a>
+                        </td>
                         <td class="text-nowrap align-middle">
                             {% if app.user == election.user %}
                                 <i class="bi bi-person-fill text-warning me-1"></i>
@@ -76,7 +83,12 @@
             </table>
         </div>
         <div class="card-footer small text-muted">
-            Übersicht über alle Wahlrunden.
+            <div class="d-flex justify-content-start align-items-center">
+                <i class="bi bi-check-square-fill me-1"></i>
+                <span class="me-3">Abstimmung</span>
+                <i class="bi bi-person-square me-1"></i>
+                <span class="">Personenwahl</span>
+            </div>
         </div>
     </div>
 </div>
