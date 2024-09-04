@@ -42,7 +42,10 @@
                             {% endif %}
                         </td>
                         <td class="text-end text-nowrap align-middle">
-                            <a class="btn btn-sm btn-secondary me-1" href="{{ path('admin_person_edit', {'id': person.id}) }}">bearbeiten</a>
+                            <div class="d-flex justify-content-end align-items-center">
+                                <a class="btn btn-sm btn-secondary me-1" href="{{ path('admin_person_edit', {'id': person.id}) }}">bearbeiten</a>
+                                {{ include('person/_delete_form_inline.html.twig') }}
+                            </div>
                         </td>
                     </tr>
                 {% endfor %}
